@@ -2,17 +2,16 @@
     box-sizing: border-box;
 }
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    color: white;
-    background: radial-gradient(circle at top, #4a174f 0%, transparent 45%), linear-gradient(135deg, #080008, #180014, #09000d);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        color: white;
+        background: radial-gradient(circle at top, #4a174f 0%, transparent 45%), linear-gradient(135deg, #080008, #180014, #09000d);
+        text-align: center;
+    }
+
 
 h1 {
     font-size: 45px;
@@ -24,10 +23,14 @@ p {
     color: #d9bfd7;
     font-size: 18px;
 }
-.container {
-    width: 90%;
-    max-width: 600px;
-}
+
+    .container {
+        width: 100%;
+        max-width: 700px;
+        padding: 20px;
+        margin: 0 auto;
+    }
+
 
 .small-text {
     font-size: 14px;
@@ -552,6 +555,110 @@ p {
         }
 
     .attraction-buttons {
+        gap: 12px;
+    }
+
+    .attraction-button {
+        min-width: 120px;
+        padding: 13px 18px;
+        font-size: 15px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 32px;
+        line-height: 1.2;
+    }
+
+    .intro p {
+        font-size: 16px;
+    }
+}
+
+/* =========================
+   MOBILE RESPONSIVE FIX
+   ========================= */
+
+@media (max-width: 600px) {
+
+    body {
+        width: 100%;
+        overflow-x: hidden;
+
+    }
+
+    /* Music player */
+
+    .music-card {
+        width: calc(100% - 30px);
+        box-sizing: border-box;
+        margin: 20px auto;
+        padding: 12px 15px;
+        gap: 10px;
+    }
+
+    .album-art {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+    }
+
+    .song-info h2 {
+        font-size: 15px;
+    }
+
+    .song-info p {
+        font-size: 12px;
+    }
+
+    #playButton {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+    }
+
+    /* Envelopes */
+
+    .envelope-section {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 15px;
+    }
+
+    .envelopes {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .envelope {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 16px;
+    }
+
+    /* Attraction game */
+
+    .attraction-game {
+        width: calc(100% - 30px);
+        box-sizing: border-box;
+        margin: 35px auto;
+        padding: 25px 15px;
+    }
+
+        .attraction-game h2 {
+            font-size: 20px;
+            line-height: 1.4;
+        }
+
+        .attraction-game p {
+            font-size: 14px;
+        }
+
+    .attraction-buttons {
+        width: 100%;
         gap: 12px;
     }
 
