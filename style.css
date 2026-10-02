@@ -1,0 +1,563 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: white;
+    background: radial-gradient(circle at top, #4a174f 0%, transparent 45%), linear-gradient(135deg, #080008, #180014, #09000d);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+h1 {
+    font-size: 45px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(255, 100, 210, 0.8), 0 0 30px rgba(255, 50, 200, 0.4);
+}
+
+p {
+    color: #d9bfd7;
+    font-size: 18px;
+}
+.container {
+    width: 90%;
+    max-width: 600px;
+}
+
+.small-text {
+    font-size: 14px;
+    color: #e8a9dc;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.intro h1 {
+    margin-top: 5px;
+}
+
+.intro p {
+    line-height: 1.6;
+}
+
+
+/* MUSIC PLAYER */
+
+.music-card {
+    margin-top: 35px;
+    display: flex;
+    align-items: center;
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 120, 210, 0.3);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 30px rgba(255, 50, 200, 0.12);
+    text-align: left;
+}
+
+
+/* ALBUM */
+
+.album-art {
+    width: 65px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    background: linear-gradient( 135deg, #ff5fcf, #8e44ad );
+    font-size: 28px;
+    box-shadow: 0 0 20px rgba(255, 95, 207, 0.4);
+}
+
+
+/* SONG INFO */
+
+.song-info {
+    flex: 1;
+    margin-left: 15px;
+}
+
+    .song-info h2 {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .song-info p {
+        margin: 5px 0 0;
+        font-size: 13px;
+        color: #bda7bb;
+    }
+
+
+/* PLAY BUTTON */
+
+#playButton {
+    width: 52px;
+    height: 52px;
+    border: none;
+    border-radius: 50%;
+    background: #ff5fcf;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255, 95, 207, 0.4);
+    transition: 0.25s;
+}
+
+    #playButton:hover {
+        transform: scale(1.08);
+        box-shadow: 0 0 30px rgba(255, 95, 207, 0.7);
+    }
+/* ENVELOPE SECTION */
+
+.envelope-section {
+    margin-top: 45px;
+}
+
+.envelope-intro {
+    font-size: 15px;
+    color: #d8b7d3;
+    margin-bottom: 20px;
+}
+
+
+/* ENVELOPE GRID */
+
+.envelopes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+
+/* ENVELOPE */
+
+.envelope {
+    min-height: 130px;
+    padding: 20px 15px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 120, 210, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    backdrop-filter: blur(10px);
+}
+
+
+    /* ENVELOPE ICON */
+
+    .envelope span {
+        font-size: 38px;
+        transition: transform 0.3s ease;
+    }
+
+
+    /* ENVELOPE TEXT */
+
+    .envelope strong {
+        font-size: 14px;
+        font-weight: normal;
+        color: #e5d2e3;
+        line-height: 1.4;
+    }
+
+
+    /* HOVER */
+
+    .envelope:hover {
+        transform: translateY(-6px);
+        background: rgba(255, 95, 207, 0.1);
+        border-color: rgba(255, 95, 207, 0.6);
+        box-shadow: 0 10px 30px rgba(255, 50, 200, 0.15);
+    }
+
+
+        .envelope:hover span {
+            transform: scale(1.15) rotate(-5deg);
+        }
+
+
+    /* FINAL ENVELOPE */
+
+    .envelope.final {
+        grid-column: span 2;
+        background: linear-gradient( 135deg, rgba(255, 95, 207, 0.12), rgba(142, 68, 173, 0.12) );
+    }
+
+
+/* PHONE */
+
+@media (max-width: 500px) {
+
+    .envelopes {
+        grid-template-columns: 1fr;
+    }
+
+    .envelope.final {
+        grid-column: span 1;
+    }
+}
+/* ENVELOPE OPEN ANIMATION */
+
+.envelope.opened {
+    transform: scale(1.08);
+    background: rgba(255, 95, 207, 0.2);
+    border-color: #ff5fcf;
+    box-shadow: 0 0 35px rgba(255, 95, 207, 0.4);
+}
+
+    .envelope.opened span {
+        transform: scale(1.3) rotate(8deg);
+    }
+/* MESSAGE OVERLAY */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+
+    .overlay.active {
+        display: flex;
+    }
+
+
+/* MESSAGE BOX */
+
+.message-box {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    padding: 40px 30px;
+    text-align: center;
+    border-radius: 25px;
+    background: linear-gradient( 145deg, rgba(70, 20, 70, 0.97), rgba(15, 5, 20, 0.98) );
+    border: 1px solid rgba(255, 100, 210, 0.4);
+    box-shadow: 0 0 50px rgba(255, 50, 200, 0.2);
+    animation: messageOpen 0.4s ease;
+}
+
+
+@keyframes messageOpen {
+
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+
+/* MESSAGE ICON */
+
+#messageIcon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+
+/* MESSAGE TITLE */
+
+#messageTitle {
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+
+/* MESSAGE */
+
+#messageText {
+    color: #dbc9d8;
+    line-height: 1.8;
+    font-size: 16px;
+    white-space: pre-line;
+}
+
+
+/* CLOSE BUTTON */
+
+#closeButton {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    border: none;
+    background: none;
+    color: #aaa;
+    font-size: 28px;
+    cursor: pointer;
+}
+.music-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    margin: 20px auto;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 105, 180, 0.35);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.15);
+}
+
+.album-art {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 105, 180, 0.15);
+    border-radius: 15px;
+    font-size: 25px;
+}
+
+.song-info {
+    flex: 1;
+}
+
+    .song-info h2 {
+        margin: 0;
+        font-size: 17px;
+    }
+
+    .song-info p {
+        margin: 4px 0 0;
+        font-size: 13px;
+        opacity: 0.7;
+    }
+
+#playButton {
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background: #ff69b4;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    #playButton:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 25px rgba(255, 105, 180, 0.8);
+    }
+
+.album-art.playing {
+    animation: musicPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes musicPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 105, 180, 0);
+    }
+
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+    }
+}
+.hearts-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.heart {
+    position: absolute;
+    bottom: -30px;
+    font-size: 18px;
+    opacity: 0;
+    animation: floatHeart 7s linear forwards;
+}
+
+@keyframes floatHeart {
+    0% {
+        transform: translateY(0) scale(0.8) rotate(0deg);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 0.7;
+    }
+
+    80% {
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(-110vh) scale(1.2) rotate(25deg);
+        opacity: 0;
+    }
+}
+.envelope.final {
+    border: 1px solid rgba(255, 105, 180, 0.7);
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.25);
+}
+
+    .envelope.final:hover {
+        transform: translateY(-8px) scale(1.04);
+        box-shadow: 0 0 20px rgba(255, 105, 180, 0.5), 0 0 40px rgba(255, 105, 180, 0.25);
+    }
+
+    .envelope.final span {
+        display: inline-block;
+    }
+
+    .envelope.final:hover span {
+        animation: finalHeartBeat 0.8s ease-in-out infinite;
+    }
+
+@keyframes finalHeartBeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.15);
+    }
+
+    40% {
+        transform: scale(1);
+    }
+
+    60% {
+        transform: scale(1.2);
+    }
+}
+#fireworks {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+.firework {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #ff69b4;
+    box-shadow: 0 0 8px #ff69b4, 0 0 15px #ff69b4, 0 0 25px #ff69b4;
+    animation: fireworkBurst 1.2s ease-out forwards;
+}
+@keyframes fireworkBurst {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate( calc((var(--x) - 50) * 4px), calc((var(--y) - 50) * 4px) ) scale(0.2);
+        opacity: 0;
+    }
+}
+/* ATTRACTIVENESS GAME */
+
+.attraction-game {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px 20px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 105, 180, 0.35);
+    border-radius: 25px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 25px rgba(255, 105, 180, 0.15);
+}
+
+    .attraction-game h2 {
+        margin-bottom: 10px;
+        font-size: 24px;
+        color: #ffffff;
+    }
+
+    .attraction-game p {
+        opacity: 0.75;
+        margin-bottom: 25px;
+    }
+
+.attraction-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.attraction-button {
+    min-width: 140px;
+    padding: 14px 22px;
+    border: 1px solid rgba(255, 105, 180, 0.5);
+    border-radius: 15px;
+    background: rgba(255, 105, 180, 0.12);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+    .attraction-button:hover {
+        transform: translateY(-5px) scale(1.05);
+        background: rgba(255, 105, 180, 0.2);
+        box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+    }
+
+#attractionResult {
+    margin-top: 25px;
+    min-height: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffb6d9;
+}
+@media (max-width: 600px) {
+
+    .attraction-game {
+        width: calc(100% - 30px);
+        margin: 35px auto;
+        padding: 25px 15px;
+        box-sizing: border-box;
+    }
+
+        .attraction-game h2 {
+            font-size: 20px;
+        }
+
+    .attraction-buttons {
+        gap: 12px;
+    }
+
+    .attraction-button {
+        min-width: 120px;
+        padding: 13px 18px;
+        font-size: 15px;
+    }
+}
