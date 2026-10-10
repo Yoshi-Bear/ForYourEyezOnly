@@ -285,3 +285,158 @@ ayeshaChoice.addEventListener("click", () => {
         "😂 You actually caught me?! Fine... you win this one. ❤️";
 
 });
+
+
+/* =========================
+   DIABOLICAL SECRET MISSION
+   ========================= */
+
+const secretOverlay = document.getElementById("secretOverlay");
+const secretClose = document.getElementById("secretClose");
+const unlockButton = document.getElementById("unlockButton");
+const secretCode = document.getElementById("secretCode");
+const secretError = document.getElementById("secretError");
+const secretMessage = document.getElementById("secretMessage");
+const secretClue = document.getElementById("secretClue");
+
+const secretSteps = [
+    document.querySelector(".album-art"),
+    document.querySelector(".intro h1"),
+    document.querySelector(".attraction-game h2")
+];
+
+let currentSecretStep = 0;
+let secretMissionFound = false;
+
+
+// THE HIDDEN SEQUENCE:
+// 1. Click the music icon.
+// 2. Click the main page heading.
+// 3. Click the attraction-game heading.
+
+secretSteps.forEach((element, index) => {
+
+    element.addEventListener("click", () => {
+
+        if (secretMissionFound) return;
+
+        if (index === currentSecretStep) {
+
+            currentSecretStep++;
+
+            if (currentSecretStep === secretSteps.length) {
+
+                secretMissionFound = true;
+
+                secretOverlay.classList.add("active");
+
+                secretClue.classList.add("active");
+
+                secretCode.value = "";
+                secretError.textContent = "";
+
+                secretMessage.classList.remove("active");
+
+                secretCode.style.display = "";
+                unlockButton.style.display = "";
+
+                document.querySelector(".secret-lock").textContent = "🔐";
+
+                secretCode.focus();
+
+            }
+
+        } else {
+
+            // Wrong order? Start again.
+            currentSecretStep = index === 0 ? 1 : 0;
+
+        }
+
+    });
+
+});
+
+
+// FINAL LOCK
+
+function unlockSecret() {
+
+    const code = secretCode.value.trim();
+    const correctCode = "09032026";
+
+    if (code === correctCode) {
+
+        secretError.textContent = "";
+
+        secretMessage.classList.add("active");
+
+        secretCode.style.display = "none";
+        unlockButton.style.display = "none";
+
+        document.querySelector(".secret-lock").textContent = "💗";
+
+        createFirework();
+        setTimeout(createFirework, 400);
+        setTimeout(createFirework, 800);
+
+    } else {
+
+        secretError.textContent =
+            "😂 Incorrect. Our memories deserve better detective work.";
+
+        secretCode.value = "";
+        secretCode.focus();
+
+    }
+
+}
+
+unlockButton.addEventListener("click", unlockSecret);
+
+secretCode.addEventListener("keydown", (event) => {
+
+    if (event.key === "Enter") {
+        unlockSecret();
+    }
+
+});
+
+
+// CLOSE THE SECRET WINDOW
+
+
+/* CLOSE AND RESET THE SECRET MISSION */
+
+function resetSecretMission() {
+
+    currentSecretStep = 0;
+    secretMissionFound = false;
+
+    secretOverlay.classList.remove("active");
+
+    secretClue.classList.remove("active");
+
+    secretCode.value = "";
+    secretCode.style.display = "";
+
+    unlockButton.style.display = "";
+
+    secretError.textContent = "";
+
+    secretMessage.classList.remove("active");
+
+    document.querySelector(".secret-lock").textContent = "🔐";
+}
+
+
+secretClose.addEventListener("click", resetSecretMission);
+
+
+secretOverlay.addEventListener("click", (event) => {
+
+    if (event.target === secretOverlay) {
+        resetSecretMission();
+    }
+
+});

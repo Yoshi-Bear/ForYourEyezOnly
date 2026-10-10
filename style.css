@@ -668,3 +668,393 @@ p {
         font-size: 15px;
     }
 }
+
+/* =========================
+   SECRET MESSAGE
+   ========================= */
+
+
+/* SECRET EASTER EGG — ALMOST INVISIBLE */
+
+.secret-trigger {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    opacity: 0.015;
+    font-size: 8px;
+    cursor: default;
+    z-index: 50;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+    .secret-trigger:hover {
+        opacity: 0.015;
+        transform: none;
+        filter: none;
+    }
+
+
+
+@keyframes secretPulse {
+
+    0%, 100% {
+        opacity: 0.25;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+
+/* SECRET OVERLAY */
+
+.secret-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(12px);
+    z-index: 20000;
+}
+
+    .secret-overlay.active {
+        display: flex;
+    }
+
+
+/* SECRET BOX */
+
+.secret-box {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    padding: 35px 25px;
+    text-align: center;
+    background: linear-gradient( 145deg, rgba(70, 20, 70, 0.98), rgba(15, 5, 20, 0.99) );
+    border: 1px solid rgba(255, 105, 180, 0.6);
+    border-radius: 25px;
+    box-shadow: 0 0 30px rgba(255, 105, 180, 0.25), 0 0 70px rgba(255, 50, 200, 0.15);
+    animation: secretOpen 0.4s ease;
+}
+
+
+@keyframes secretOpen {
+
+    from {
+        opacity: 0;
+        transform: scale(0.75) translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+
+/* LOCK */
+
+.secret-lock {
+    font-size: 55px;
+    margin-bottom: 10px;
+}
+
+
+.secret-box h2 {
+    margin-bottom: 10px;
+}
+
+
+.secret-box p {
+    line-height: 1.6;
+}
+
+
+.secret-hint {
+    font-size: 14px;
+    color: #e8a9dc;
+    margin-top: 20px;
+}
+
+
+/* CODE INPUT */
+
+#secretCode {
+    width: 100%;
+    padding: 13px 15px;
+    margin-top: 5px;
+    border: 1px solid rgba(255, 105, 180, 0.4);
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.35);
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    outline: none;
+}
+
+
+    #secretCode:focus {
+        border-color: #ff69b4;
+        box-shadow: 0 0 15px rgba(255, 105, 180, 0.35);
+    }
+
+
+    #secretCode::placeholder {
+        color: #9d8299;
+    }
+
+
+/* UNLOCK BUTTON */
+
+#unlockButton {
+    width: 100%;
+    margin-top: 15px;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    background: #ff69b4;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+
+    #unlockButton:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 15px rgba(255, 105, 180, 0.5), 0 0 30px rgba(255, 105, 180, 0.25);
+    }
+
+
+/* WRONG CODE */
+
+#secretError {
+    min-height: 24px;
+    margin: 12px 0 0;
+    font-size: 14px;
+    color: #ff9fcf;
+}
+
+
+/* SECRET MESSAGE */
+
+.secret-message {
+    display: none;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 105, 180, 0.25);
+    animation: secretReveal 0.6s ease;
+}
+
+
+    .secret-message.active {
+        display: block;
+    }
+
+
+.secret-heart {
+    font-size: 50px;
+    margin-bottom: 10px;
+    animation: secretHeartbeat 1.5s ease-in-out infinite;
+}
+
+
+.secret-message h2 {
+    color: #ffb6d9;
+}
+
+
+.secret-message p {
+    font-size: 15px;
+    color: #dbc9d8;
+}
+
+
+.secret-final {
+    font-weight: bold;
+    color: #ffb6d9 !important;
+}
+
+
+@keyframes secretReveal {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+@keyframes secretHeartbeat {
+
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+
+/* CLOSE */
+
+#secretClose {
+    position: absolute;
+    top: 10px;
+    right: 16px;
+    border: none;
+    background: none;
+    color: #aaa;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+
+    #secretClose:hover {
+        color: white;
+    }
+
+
+/* SECRET MOBILE */
+
+@media (max-width: 600px) {
+
+    .secret-trigger {
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .secret-box {
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 30px 20px;
+    }
+
+    .secret-lock {
+        font-size: 45px;
+    }
+
+    .secret-message p {
+        font-size: 14px;
+    }
+}
+
+/* DIABOLICAL SECRET CLUE */
+
+.secret-clue {
+    display: none;
+    margin: 15px 0;
+    padding: 15px;
+    border: 1px dashed rgba(255, 105, 180, 0.45);
+    border-radius: 12px;
+    background: rgba(255, 105, 180, 0.06);
+    color: #ffb6d9;
+    font-size: 14px;
+    line-height: 1.8;
+    white-space: pre-line;
+}
+
+    .secret-clue.active {
+        display: block;
+        animation: secretReveal 0.6s ease;
+    }
+
+
+/* Make the secret-mission targets clickable */
+
+.album-art {
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.intro h1,
+.attraction-game h2 {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Allow long messages to scroll */
+
+.overlay {
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.message-box {
+    max-height: 90vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+#messageText {
+    overflow-wrap: anywhere;
+}
+
+/* Make the secret message fit smaller screens */
+
+.secret-overlay {
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.secret-box {
+    max-height: 90vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.secret-message {
+    padding-bottom: 10px;
+}
+
+
+/* Keep envelope messages inside the screen */
+.overlay {
+    overflow-y: auto;
+    padding: 12px;
+}
+
+.message-box {
+    width: 100%;
+    max-width: 500px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 25px 20px;
+    margin: auto;
+}
+
+/* Make long messages easier to read */
+#messageText {
+    overflow-wrap: anywhere;
+    line-height: 1.7;
+}
+
+/* Smaller spacing on phones */
+@media (max-width: 600px) {
+    .message-box {
+        max-height: 88vh;
+        padding: 20px 16px;
+    }
+
+    #messageText {
+        font-size: 15px;
+        line-height: 1.6;
+    }
+}
