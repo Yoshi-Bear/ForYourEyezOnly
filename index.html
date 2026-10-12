@@ -7,20 +7,21 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>For Your Eyes Only ❤️</title>
+    <title>For Your Eyez Only ❤️</title>
 
     <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
-    <div class="hearts-container"></div>
+    <div class="hearts-container" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
     <div class="container">
         <div id="fireworks"></div>
         <div class="intro">
-            <p class="small-text">A little something for you...</p>
+            <p class="small-text">// PRIVATE TRANSMISSION · TO: AYESHA</p>
 
-            <h1>For Your Eyes Only ❤️</h1>
+            <h1 class="glitch" data-text="For Your Eyes Only">For Your Eyes Only <span>♥</span></h1>
 
             <p>
                 Put on your headphones.
@@ -28,10 +29,11 @@
             </p>
         </div>
 
+        <div class="section-label">01 / AUDIO TRANSMISSION <span>● ONLINE</span></div>
         <div class="music-card">
 
             <div class="album-art">
-                🎵
+                🎧
             </div>
 
             <div class="song-info">
@@ -40,7 +42,7 @@
             </div>
 
             <button id="playButton">▶</button>
-            <audio id="music" src="song.mp3"></audio>
+            <audio id="music" src="music/song.mp3"></audio>
 
         </div>
 
@@ -48,6 +50,7 @@
         <!-- ENVELOPES -->
 
         <div class="envelope-section">
+            <div class="section-label">02 / ENCRYPTED FILES <span>5 FILES FOUND</span></div>
 
             <p class="envelope-intro">
                 While you listen... open a few things for me 💌
@@ -87,6 +90,7 @@
 
     </div>
     <div class="attraction-game">
+        <div class="section-label">03 / SYSTEM CHALLENGE <span>CHOOSE WISELY</span></div>
 
         <h2>Who is the most attractive one in the relationship? 😏</h2>
 
@@ -113,6 +117,7 @@
     <div id="messageOverlay" class="overlay">
 
         <div class="message-box">
+            <div class="modal-label">DECRYPTED MESSAGE <span>♥</span></div>
 
             <button id="closeButton">×</button>
 
@@ -127,11 +132,12 @@
     </div>
     <!-- SECRET MESSAGE -->
 
- 
+
 
     <div id="secretOverlay" class="secret-overlay">
 
         <div class="secret-box">
+            <div class="modal-label">RESTRICTED ACCESS <span>TOP SECRET</span></div>
 
             <button id="secretClose">×</button>
 
@@ -192,7 +198,7 @@
                 </p>
 
                 <p>
-                   No matter what happens between us, no matter how much we fight or argue
+                    No matter what happens between us, no matter how much we fight or argue
                     I promise that I will never give up on us. It's you babe it always was it always will be
                     Please never doubt that my princess'
                 </p>
@@ -219,6 +225,90 @@
 
         </div>
 
+    </div>
+
+    <!-- MISSION 02: PROJECT AYESHA -->
+
+    <div id="prankOverlay" class="prank-overlay">
+        <div class="prank-terminal">
+
+            <button id="prankClose" class="prank-close">×</button>
+
+            <div class="prank-header">
+                <span>●</span> PROJECT_AYESHA.exe
+            </div>
+
+            <div id="prankPuzzle">
+                <p class="terminal-line">
+                    > UNAUTHORIZED USER DETECTED
+                </p>
+
+                <p class="terminal-line">
+                    > ENCRYPTED FILE FOUND
+                </p>
+
+                <h2>ACCESS DENIED 🔒</h2>
+
+                <p>
+                    So you found the hidden terminal?
+                    Cute. Let's see if you're actually smart.
+                </p>
+
+                <p class="prank-hint">
+                    ACCESS KEY REQUIRED
+                </p>
+
+                <p id="prankQuestion"></p>
+
+                <input id="prankInput"
+                       type="text"
+                       placeholder="Enter your answer..."
+                       autocomplete="off">
+
+                <button id="prankSubmit">
+                    DECRYPT FILE
+                </button>
+
+                <p id="prankError"></p>
+            </div>
+
+            <div id="prankResult" class="prank-result">
+                <p class="terminal-line">
+                    > ACCESS GRANTED ✓
+                </p>
+
+                <p class="terminal-line">
+                    > DECRYPTION COMPLETE
+                </p>
+
+                <h1>CONGRATULATIONS, DINGUS. 🤡</h1>
+
+                <p>
+                    You really went through ALL that effort
+                    just to find another message from me?
+                </p>
+
+                <p>
+                    I knew you were obsessed, but DAMN. 😭
+                </p>
+
+                <p>
+                    Imagine getting hacked by your own
+                    boyfriend. Embarrassing.
+                </p>
+
+                <h2>SYSTEM ERROR: GIRLFRIEND HAS BEEN TROLLED</h2>
+
+                <p class="prank-stats">
+                    IQ TEST: FAILED ❌
+                    <br>
+                    CLOWN DETECTED: AYESHA 🤡
+                    <br>
+                    LOVE LEVEL: unfortunately, still 100% ❤️
+                </p>
+            </div>
+
+        </div>
     </div>
 
 

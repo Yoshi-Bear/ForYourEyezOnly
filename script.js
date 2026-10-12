@@ -197,7 +197,7 @@ function createHeart() {
 
     heart.classList.add("heart");
 
-    heart.textContent = "♥";
+    heart.textContent = Math.random() > 0.5 ? "1" : "0";
 
     heart.style.left = Math.random() * 100 + "%";
 
@@ -439,4 +439,181 @@ secretOverlay.addEventListener("click", (event) => {
         resetSecretMission();
     }
 
+});
+
+/* FLOATING BINARY ANIMATION */
+
+const binaryContainer = document.querySelector(".hearts-container");
+
+function createBinaryDigit() {
+    const digit = document.createElement("span");
+
+    digit.className = "binary-digit";
+    digit.textContent = Math.random() > 0.5 ? "1" : "0";
+
+    digit.style.left = Math.random() * 100 + "vw";
+    digit.style.fontSize = (14 + Math.random() * 18) + "px";
+    digit.style.animationDuration = (6 + Math.random() * 6) + "s";
+
+    binaryContainer.appendChild(digit);
+
+    setTimeout(() => {
+        digit.remove();
+    }, 12000);
+}
+
+setInterval(createBinaryDigit, 250);
+
+// Show some numbers immediately
+for (let i = 0; i < 25; i++) {
+    setTimeout(createBinaryDigit, i * 80);
+}
+
+/* =====================================
+   MISSION 02 — PROJECT AYESHA
+   ===================================== */
+
+const prankOverlay = document.getElementById("prankOverlay");
+const prankClose = document.getElementById("prankClose");
+const prankQuestion = document.getElementById("prankQuestion");
+const prankInput = document.getElementById("prankInput");
+const prankSubmit = document.getElementById("prankSubmit");
+const prankError = document.getElementById("prankError");
+const prankPuzzle = document.getElementById("prankPuzzle");
+const prankResult = document.getElementById("prankResult");
+
+// Secret sequence: final envelope -> music title -> small intro text
+const prankTargets = [
+    document.querySelector(".envelope.final"),
+    document.querySelector(".song-info h2"),
+    document.querySelector(".envelope-intro")
+];
+let prankSequence = 0;
+let prankStage = 0;
+
+const prankQuestions = [
+    {
+        question: "LEVEL 01: Which jacket did I wear when we first met?",
+        answers: ["adidas", "adidas jacket"]
+    },
+    {
+        question: "LEVEL 02: What is the name of the ginger cat that chose me?",
+        answers: ["garfielda"]
+    },
+    {
+        question: "LEVEL 03: What type of milk do I like drinking?",
+        answers: ["cold milk", "cold"]
+    }
+
+   
+
+
+];
+
+function openPrankMission() {
+    prankStage = 0;
+    prankPuzzle.style.display = "block";
+    prankResult.classList.remove("active");
+    prankOverlay.classList.add("active");
+    showPrankQuestion();
+}
+
+function showPrankQuestion() {
+    prankQuestion.textContent = prankQuestions[prankStage].question;
+    prankInput.value = "";
+    prankError.textContent = "";
+    prankInput.focus();
+}
+
+prankTargets.forEach((target, index) => {
+
+    if (!target) {
+        console.error("Missing prank target:", index + 1);
+        return;
+    }
+
+    target.addEventListener("click", () => {
+
+        console.log("Clicked target:", index + 1);
+        console.log("Expected target:", prankSequence + 1);
+
+        if (index === prankSequence) {
+
+            prankSequence++;
+
+            if (prankSequence === prankTargets.length) {
+                prankSequence = 0;
+                console.log("MISSION 02 UNLOCKED!");
+                openPrankMission();
+            }
+
+        } else {
+            prankSequence = index === 0 ? 1 : 0;
+        }
+
+    });
+});
+function checkPrankAnswer() {
+    const answer = prankInput.value
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, " ");
+
+    const validAnswers = prankQuestions[prankStage].answers;
+
+    if (validAnswers.includes(answer)) {
+        prankStage++;
+
+        if (prankStage >= prankQuestions.length) {
+            prankPuzzle.style.display = "none";
+            prankResult.classList.add("active");
+
+            document.querySelector(".prank-terminal")
+                .classList.add("prank-shake");
+
+            setTimeout(() => {
+                document.querySelector(".prank-terminal")
+                    .classList.remove("prank-shake");
+            }, 600);
+
+            createFirework();
+            setTimeout(createFirework, 400);
+            setTimeout(createFirework, 800);
+        } else {
+            showPrankQuestion();
+        }
+    } else {
+        prankError.textContent =
+            "ACCESS DENIED. Try again, genius. 🤡";
+        prankInput.value = "";
+        prankInput.focus();
+    }
+}
+
+prankSubmit.addEventListener("click", checkPrankAnswer);
+
+prankInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        checkPrankAnswer();
+    }
+});
+
+function closePrankMission() {
+    prankOverlay.classList.remove("active");
+    prankSequence = 0;
+}
+
+prankClose.addEventListener("click", closePrankMission);
+
+prankOverlay.addEventListener("click", (event) => {
+    if (event.target === prankOverlay) {
+        closePrankMission();
+    }
+});
+/* TEMPORARY TEST FOR MISSION 02 */
+
+document.addEventListener("keydown", function (event) {
+    if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === "p") {
+        openPrankMission();
+    }
 });
