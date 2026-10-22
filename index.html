@@ -390,6 +390,221 @@ document.body.prepend(timer);
     setInterval(updateAnniversaryCountdown, 1000);
   })();
 </script>
+    <section id="loveMemory">
+  <h2>Match My Heart ❤️</h2>
+  <p>Find your perfect matches. You already found me 😉</p>
+
+  <div class="memory-stats">
+    <span>Moves: <b id="memoryMoves">0</b></span>
+    <span>Time: <b id="memoryTime">0:00</b></span>
+  </div>
+
+  <div id="memoryBoard"></div>
+  <p id="memoryMessage" role="status">Tap a card to start.</p>
+  <button id="memoryRestart" type="button">Play again ↻</button>
+</section>
+
+<style>
+  #loveMemory {
+    width: calc(100% - 30px);
+    max-width: 480px;
+    margin: 40px auto;
+    padding: 24px 16px;
+    box-sizing: border-box;
+    text-align: center;
+    color: white;
+  }
+
+  #loveMemory h2 {
+    margin-bottom: 8px;
+  }
+
+  #loveMemory > p {
+    line-height: 1.5;
+  }
+
+  #loveMemory .memory-stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 20px 0;
+  }
+
+  #memoryBoard {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  #memoryBoard .memory-card {
+    position: static;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    min-width: 0;
+    aspect-ratio: 1;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #ff8fc4;
+    border-radius: 12px;
+    background: #431b3b;
+    color: white;
+    font: inherit;
+    font-size: clamp(24px, 7vw, 38px);
+    cursor: pointer;
+    opacity: 1;
+    transform: none;
+    transition: background 0.2s;
+    touch-action: manipulation;
+  }
+
+  #memoryBoard .memory-card.is-open {
+    background: #773258;
+  }
+
+  #memoryBoard .memory-card.is-matched {
+    background: #24574b;
+    border-color: #8de0bd;
+    cursor: default;
+  }
+
+  #memoryBoard .memory-card:focus-visible,
+  #memoryRestart:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 3px;
+  }
+
+  #memoryRestart {
+    position: static;
+    margin-top: 8px;
+    padding: 12px 24px;
+    border: 1px solid #ff8fc4;
+    border-radius: 25px;
+    background: #773258;
+    color: white;
+    font: inherit;
+    cursor: pointer;
+    transform: none;
+  }
+</style>
+
+<script>
+  (() => {
+    const board = document.getElementById("memoryBoard");
+    const movesLabel = document.getElementById("memoryMoves");
+    const timeLabel = document.getElementById("memoryTime");
+    const message = document.getElementById("memoryMessage");
+    const restart = document.getElementById("memoryRestart");
+
+    const symbols = ["❤️", "🌸", "🧸", "👑", "💌", "🌙", "🦋", "💍"];
+
+    let firstCard = null;
+    let locked = false;
+    let moves = 0;
+    let pairs = 0;
+    let startedAt = null;
+    let clock = null;
+    let flipTimeout = null;
+
+    function updateTime() {
+      const seconds = Math.floor((Date.now() - startedAt) / 1000);
+      timeLabel.textContent =
+        Math.floor(seconds / 60) + ":" +
+        String(seconds % 60).padStart(2, "0");
+    }
+
+    function reveal(card) {
+      card.textContent = card.dataset.symbol;
+      card.classList.add("is-open");
+      card.setAttribute("aria-label", card.dataset.symbol);
+    }
+
+    function hide(card) {
+      card.textContent = "♡";
+      card.classList.remove("is-open");
+      card.setAttribute("aria-label", "Hidden card");
+    }
+
+    function chooseCard(card) {
+      if (locked || card.disabled || card === firstCard) return;
+
+      if (startedAt === null) {
+        startedAt = Date.now();
+        clock = setInterval(updateTime, 1000);
+        message.textContent = "Find all eight pairs ❤️";
+      }
+
+      reveal(card);
+
+      if (!firstCard) {
+        firstCard = card;
+        return;
+      }
+
+      moves++;
+      movesLabel.textContent = moves;
+      const previousCard = firstCard;
+      firstCard = null;
+
+      if (previousCard.dataset.symbol === card.dataset.symbol) {
+        previousCard.classList.add("is-matched");
+        card.classList.add("is-matched");
+        previousCard.disabled = true;
+        card.disabled = true;
+        pairs++;
+
+        if (pairs === symbols.length) {
+          clearInterval(clock);
+          updateTime();
+          message.textContent =
+            `All matched in ${moves} moves and ${timeLabel.textContent}! ` +
+            "Our best match is still us 😉❤️";
+        }
+      } else {
+        locked = true;
+        flipTimeout = setTimeout(() => {
+          hide(previousCard);
+          hide(card);
+          locked = false;
+        }, 850);
+      }
+    }
+
+    function startGame() {
+      clearInterval(clock);
+      clearTimeout(flipTimeout);
+      firstCard = null;
+      locked = false;
+      moves = 0;
+      pairs = 0;
+      startedAt = null;
+      movesLabel.textContent = "0";
+      timeLabel.textContent = "0:00";
+      message.textContent = "Tap a card to start.";
+      board.replaceChildren();
+
+      const deck = [...symbols, ...symbols];
+
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+
+      deck.forEach(symbol => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "memory-card";
+        card.dataset.symbol = symbol;
+        hide(card);
+        card.addEventListener("click", () => chooseCard(card));
+        board.appendChild(card);
+      });
+    }
+
+    restart.addEventListener("click", startGame);
+    startGame();
+  })();
+</script>
 </body>
 
 </html>
