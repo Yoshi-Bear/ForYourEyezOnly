@@ -313,7 +313,96 @@
 
     <script src="script.js"></script>
 
+<!-- Anniversary countdown -->
+<section class="anniversary-countdown">
+  <h2>Our next chapter ❤️</h2>
+  <p>Counting down to 9 March 2027</p>
+  <div id="anniversaryTimer" aria-live="off"></div>
+  <p>Another year of you being obsessed with me 😉</p>
+</section>
 
+<style>
+  .anniversary-countdown {
+    width: calc(100% - 30px);
+    max-width: 600px;
+    margin: 35px auto;
+    padding: 25px 15px;
+    box-sizing: border-box;
+    text-align: center;
+    color: #fff;
+    background: rgba(255, 105, 180, 0.1);
+    border: 1px solid rgba(255, 160, 200, 0.45);
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(255, 80, 160, 0.15);
+  }
+
+  .anniversary-countdown h2 {
+    margin: 0 0 10px;
+    font-size: 26px;
+  }
+
+  #anniversaryTimer {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin: 22px 0;
+  }
+
+  #anniversaryTimer .countdown-box {
+    padding: 14px 4px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+  }
+
+  #anniversaryTimer strong {
+    display: block;
+    font-size: clamp(20px, 5vw, 32px);
+    color: #ffb6d9;
+  }
+
+  #anniversaryTimer small {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+</style>
+
+<script>
+  (() => {
+    // Midnight in South Africa on our anniversary.
+    const anniversary = new Date("2027-03-09T00:00:00+02:00").getTime();
+    const timer = document.getElementById("anniversaryTimer");
+
+    function updateAnniversaryCountdown() {
+      const remaining = anniversary - Date.now();
+
+      if (remaining <= 0) {
+        timer.textContent = "Happy anniversary, my love! ❤️";
+        return;
+      }
+
+      const days = Math.floor(remaining / 86400000);
+      const hours = Math.floor((remaining / 3600000) % 24);
+      const minutes = Math.floor((remaining / 60000) % 60);
+      const seconds = Math.floor((remaining / 1000) % 60);
+
+      timer.innerHTML = [
+        [days, "Days"],
+        [hours, "Hours"],
+        [minutes, "Minutes"],
+        [seconds, "Seconds"]
+      ].map(([value, label]) => `
+        <div class="countdown-box">
+          <strong>${String(value).padStart(2, "0")}</strong>
+          <small>${label}</small>
+        </div>
+      `).join("");
+    }
+
+    updateAnniversaryCountdown();
+    setInterval(updateAnniversaryCountdown, 1000);
+  })();
+</script>
 </body>
 
 </html>
