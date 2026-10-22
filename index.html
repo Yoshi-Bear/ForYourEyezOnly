@@ -399,211 +399,587 @@ document.body.prepend(timer);
     <span>Time: <b id="memoryTime">0:00</b></span>
   </div>
 
-  <div id="memoryBoard"></div>
-  <p id="memoryMessage" role="status">Tap a card to start.</p>
-  <button id="memoryRestart" type="button">Play again ↻</button>
+<!-- Memory game launcher -->
+<section id="memoryInvite">
+  <span class="mi-sparkle">✦</span>
+  <div>
+    <small>A LITTLE CHALLENGE FOR YOU</small>
+    <h2>Think we're a perfect match?</h2>
+    <p>Prove it. There's something waiting if you win.</p>
+  </div>
+  <button id="memoryLaunch" type="button">Play me ♡</button>
 </section>
 
+<!-- Popup game -->
+<dialog id="memoryModal" aria-labelledby="mmTitle">
+  <div class="mm-content">
+    <button id="mmClose" type="button" aria-label="Close game">✕</button>
+
+    <span class="mm-eyebrow">JUST YOU, ME & A LITTLE COMPETITION</span>
+    <h2 id="mmTitle">A perfect match ♡</h2>
+    <p class="mm-subtitle">Find all eight pairs to unlock your surprise.</p>
+
+    <div class="mm-stats">
+      <span><b id="mmMoves">0</b> moves</span>
+      <span><b id="mmTime">0:00</b> time</span>
+      <span><b id="mmPairs">0</b>/8 pairs</span>
+    </div>
+
+    <div id="mmBoard"></div>
+    <p id="mmStatus" role="status">Your first move, princess.</p>
+    <button id="mmRestart" class="mm-pill" type="button">
+      Start again ↻
+    </button>
+
+    <div id="mmReward" hidden>
+      <div class="mm-reward-heart">💌</div>
+      <span class="mm-eyebrow">YOUR REWARD IS UNLOCKED</span>
+      <h3>Okay, you earned this.</h3>
+      <p>
+        This voucher entitles Ayesha to one movie night:
+        your movie choice, cuddles included, and me pretending
+        I wasn't going to spoil you anyway.
+      </p>
+      <div class="mm-voucher">ONE MOVIE NIGHT WITH ME ♡</div>
+      <p class="mm-fineprint">
+        Screenshot to redeem. Unfortunately, I'm part of the deal.
+      </p>
+      <button id="mmAgain" class="mm-pill" type="button">
+        Beat your score ↗
+      </button>
+    </div>
+
+    <div id="mmConfetti" aria-hidden="true"></div>
+  </div>
+</dialog>
+
 <style>
-  #loveMemory {
-    width: calc(100% - 30px);
-    max-width: 480px;
-    margin: 40px auto;
-    padding: 24px 16px;
+  #memoryInvite,
+  #memoryInvite *,
+  #memoryModal,
+  #memoryModal * {
     box-sizing: border-box;
+  }
+
+  #memoryInvite {
+    width: calc(100% - 32px);
+    max-width: 620px;
+    margin: 32px auto;
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    color: #fff0f7;
+    text-align: left;
+    border: 1px solid rgba(255, 174, 212, .22);
+    border-radius: 22px;
+    background: linear-gradient(120deg, #32192e, #1e1627);
+  }
+
+  #memoryInvite .mi-sparkle {
+    color: #ffafd3;
+    font-size: 34px;
+  }
+
+  #memoryInvite small,
+  #memoryModal .mm-eyebrow {
+    color: #df9cbb;
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
+
+  #memoryInvite h2 {
+    margin: 7px 0;
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  #memoryInvite p {
+    margin: 0;
+    color: #c8b4c8;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  #memoryLaunch,
+  #memoryModal .mm-pill {
+    position: static;
+    width: auto;
+    margin: 0;
+    padding: 12px 20px;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 30px;
+    background: #f5b6d2;
+    color: #35192b;
+    font: inherit;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transform: none;
+    transition: filter .2s;
+  }
+
+  #memoryLaunch:hover,
+  #memoryModal .mm-pill:hover {
+    filter: brightness(1.12);
+  }
+
+  #memoryModal {
+    position: fixed;
+    inset: 0;
+    width: min(94vw, 490px);
+    max-width: 490px;
+    max-height: 90dvh;
+    margin: auto;
+    padding: 0;
+    overflow-y: auto;
+    color: #fff0f7;
+    background: #1c1423;
+    border: 1px solid #684156;
+    border-radius: 26px;
+    box-shadow: 0 25px 100px #0009;
+  }
+
+  #memoryModal[open] {
+    animation: mmEnter .35s ease both;
+  }
+
+  #memoryModal::backdrop {
+    background: rgba(8, 5, 15, .82);
+    backdrop-filter: blur(8px);
+  }
+
+  #memoryModal .mm-content {
+    position: relative;
+    padding: 48px 24px 28px;
+    overflow: hidden;
     text-align: center;
-    color: white;
   }
 
-  #loveMemory h2 {
-    margin-bottom: 8px;
+  #mmClose {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #ffffff0d;
+    color: #eac7da;
+    font-size: 16px;
+    cursor: pointer;
+    transform: none;
   }
 
-  #loveMemory > p {
-    line-height: 1.5;
+  #mmTitle {
+    margin: 12px 0 8px;
+    font-size: 28px;
   }
 
-  #loveMemory .memory-stats {
+  #memoryModal .mm-subtitle,
+  #mmStatus {
+    color: #bca7bf;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  #memoryModal .mm-stats {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin: 20px 0;
+    gap: 22px;
+    margin: 24px 0 18px;
+    color: #bca7bf;
+    font-size: 12px;
   }
 
-  #memoryBoard {
+  #memoryModal .mm-stats b {
+    color: #ffd0e5;
+    font-variant-numeric: tabular-nums;
+  }
+
+  #mmBoard {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;
+    gap: 9px;
   }
 
-  #memoryBoard .memory-card {
-    position: static;
-    display: grid;
-    place-items: center;
+  #mmBoard .mm-card {
+    position: relative;
+    display: block;
     width: 100%;
     min-width: 0;
     aspect-ratio: 1;
     margin: 0;
     padding: 0;
-    border: 1px solid #ff8fc4;
-    border-radius: 12px;
-    background: #431b3b;
-    color: white;
-    font: inherit;
-    font-size: clamp(24px, 7vw, 38px);
+    border: 0;
+    background: transparent;
     cursor: pointer;
-    opacity: 1;
+    perspective: 600px;
     transform: none;
-    transition: background 0.2s;
+    opacity: 1;
+    animation: mmDeal .4s ease both;
+    animation-delay: var(--delay);
     touch-action: manipulation;
   }
 
-  #memoryBoard .memory-card.is-open {
-    background: #773258;
+  #mmBoard .mm-inner {
+    position: absolute;
+    inset: 0;
+    transition: transform .45s cubic-bezier(.2,.7,.2,1);
+    transform-style: preserve-3d;
   }
 
-  #memoryBoard .memory-card.is-matched {
-    background: #24574b;
-    border-color: #8de0bd;
-    cursor: default;
+  #mmBoard .mm-card.flipped .mm-inner {
+    transform: rotateY(180deg);
   }
 
-  #memoryBoard .memory-card:focus-visible,
-  #memoryRestart:focus-visible {
-    outline: 3px solid white;
-    outline-offset: 3px;
+  #mmBoard .mm-face {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border: 1px solid #69455f;
+    border-radius: 13px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
-  #memoryRestart {
-    position: static;
-    margin-top: 8px;
-    padding: 12px 24px;
-    border: 1px solid #ff8fc4;
-    border-radius: 25px;
-    background: #773258;
-    color: white;
-    font: inherit;
-    cursor: pointer;
-    transform: none;
+  #mmBoard .mm-front {
+    background: linear-gradient(140deg, #39243d, #281d30);
+    color: #cf93b3;
+    font-size: 30px;
+  }
+
+  #mmBoard .mm-back {
+    background: #543047;
+    transform: rotateY(180deg);
+    font-size: clamp(24px, 6vw, 34px);
+  }
+
+  #mmBoard .matched .mm-back {
+    background: #24483e;
+    border-color: #83bba3;
+    box-shadow: 0 0 14px #83bba322;
+  }
+
+  #memoryModal button:focus-visible,
+  #memoryLaunch:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 4px;
+  }
+
+  #mmReward {
+    position: relative;
+    z-index: 2;
+    margin-top: 24px;
+    padding: 25px 18px;
+    border: 1px dashed #d99ab9;
+    border-radius: 18px;
+    background: #302033;
+    animation: mmEnter .5s ease both;
+  }
+
+  #mmReward[hidden] {
+    display: none;
+  }
+
+  #memoryModal .mm-reward-heart {
+    margin-bottom: 15px;
+    font-size: 44px;
+    animation: mmFloat 2s ease-in-out infinite;
+  }
+
+  #mmReward h3 {
+    margin: 12px 0;
+    font-size: 23px;
+  }
+
+  #mmReward p {
+    color: #dbc3d4;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  #memoryModal .mm-voucher {
+    margin: 20px 0 10px;
+    color: #ffd0e5;
+    font-size: 12px;
+    letter-spacing: 2px;
+    line-height: 1.7;
+  }
+
+  #mmReward .mm-fineprint {
+    font-size: 11px;
+    color: #bca7bf;
+  }
+
+  #mmConfetti {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 3;
+  }
+
+  #mmConfetti i {
+    position: absolute;
+    top: -20px;
+    width: 7px;
+    height: 12px;
+    animation: mmFall 2.7s ease-in forwards;
+  }
+
+  @keyframes mmEnter {
+    from { opacity: 0; transform: translateY(20px) scale(.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes mmDeal {
+    from { opacity: 0; translate: 0 15px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+
+  @keyframes mmFloat {
+    50% { transform: translateY(-7px) rotate(-5deg); }
+  }
+
+  @keyframes mmFall {
+    to { transform: translateY(950px) rotate(650deg); opacity: 0; }
+  }
+
+  @media (max-width: 500px) {
+    #memoryInvite {
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 20px;
+    }
+
+    #memoryInvite > div {
+      flex: 1;
+    }
+
+    #memoryLaunch {
+      width: 100%;
+    }
+
+    #memoryModal .mm-content {
+      padding: 46px 16px 24px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #memoryModal,
+    #memoryModal *,
+    #memoryModal *::before {
+      animation: none !important;
+      transition: none !important;
+    }
   }
 </style>
 
 <script>
-  (() => {
-    const board = document.getElementById("memoryBoard");
-    const movesLabel = document.getElementById("memoryMoves");
-    const timeLabel = document.getElementById("memoryTime");
-    const message = document.getElementById("memoryMessage");
-    const restart = document.getElementById("memoryRestart");
+(() => {
+  const modal = document.getElementById("memoryModal");
+  const board = document.getElementById("mmBoard");
+  const movesText = document.getElementById("mmMoves");
+  const timeText = document.getElementById("mmTime");
+  const pairsText = document.getElementById("mmPairs");
+  const status = document.getElementById("mmStatus");
+  const reward = document.getElementById("mmReward");
+  const confetti = document.getElementById("mmConfetti");
 
-    const symbols = ["❤️", "🌸", "🧸", "👑", "💌", "🌙", "🦋", "💍"];
+  const symbols = ["❤️", "🌸", "🧸", "👑", "💌", "🌙", "🦋", "💍"];
+  let first = null;
+  let locked = false;
+  let moves = 0;
+  let pairs = 0;
+  let elapsed = 0;
+  let runningSince = null;
+  let clock = null;
+  let flipTimeout = null;
+  let confettiTimeout = null;
+  let oldOverflow = "";
 
-    let firstCard = null;
-    let locked = false;
-    let moves = 0;
-    let pairs = 0;
-    let startedAt = null;
-    let clock = null;
-    let flipTimeout = null;
+  function showTime() {
+    const ms = elapsed +
+      (runningSince === null ? 0 : Date.now() - runningSince);
+    const seconds = Math.floor(ms / 1000);
 
-    function updateTime() {
-      const seconds = Math.floor((Date.now() - startedAt) / 1000);
-      timeLabel.textContent =
-        Math.floor(seconds / 60) + ":" +
-        String(seconds % 60).padStart(2, "0");
+    timeText.textContent = Math.floor(seconds / 60) + ":" +
+      String(seconds % 60).padStart(2, "0");
+  }
+
+  function resumeClock() {
+    if (runningSince !== null || pairs === 8) return;
+    runningSince = Date.now();
+    clock = setInterval(showTime, 250);
+  }
+
+  function pauseClock() {
+    if (runningSince !== null) {
+      elapsed += Date.now() - runningSince;
+      runningSince = null;
+    }
+    clearInterval(clock);
+    showTime();
+  }
+
+  function celebrate() {
+    clearTimeout(confettiTimeout);
+    confetti.replaceChildren();
+
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const colours = ["#f5b6d2", "#fff0f7", "#d2b5ff", "#99d9bc"];
+
+    for (let i = 0; i < 55; i++) {
+      const piece = document.createElement("i");
+      piece.style.left = Math.random() * 100 + "%";
+      piece.style.background = colours[i % colours.length];
+      piece.style.animationDelay = Math.random() * .7 + "s";
+      confetti.appendChild(piece);
     }
 
-    function reveal(card) {
-      card.textContent = card.dataset.symbol;
-      card.classList.add("is-open");
-      card.setAttribute("aria-label", card.dataset.symbol);
+    confettiTimeout = setTimeout(() => confetti.replaceChildren(), 3500);
+  }
+
+  function flip(card, visible) {
+    card.classList.toggle("flipped", visible);
+    card.setAttribute("aria-label",
+      visible ? card.dataset.symbol : "Hidden card");
+  }
+
+  function choose(card) {
+    if (locked || card.disabled || card === first) return;
+
+    resumeClock();
+    flip(card, true);
+
+    if (!first) {
+      first = card;
+      status.textContent = "Now find its other half ♡";
+      return;
     }
 
-    function hide(card) {
-      card.textContent = "♡";
-      card.classList.remove("is-open");
-      card.setAttribute("aria-label", "Hidden card");
-    }
+    movesText.textContent = ++moves;
+    const previous = first;
+    first = null;
 
-    function chooseCard(card) {
-      if (locked || card.disabled || card === firstCard) return;
-
-      if (startedAt === null) {
-        startedAt = Date.now();
-        clock = setInterval(updateTime, 1000);
-        message.textContent = "Find all eight pairs ❤️";
-      }
-
-      reveal(card);
-
-      if (!firstCard) {
-        firstCard = card;
-        return;
-      }
-
-      moves++;
-      movesLabel.textContent = moves;
-      const previousCard = firstCard;
-      firstCard = null;
-
-      if (previousCard.dataset.symbol === card.dataset.symbol) {
-        previousCard.classList.add("is-matched");
-        card.classList.add("is-matched");
-        previousCard.disabled = true;
-        card.disabled = true;
-        pairs++;
-
-        if (pairs === symbols.length) {
-          clearInterval(clock);
-          updateTime();
-          message.textContent =
-            `All matched in ${moves} moves and ${timeLabel.textContent}! ` +
-            "Our best match is still us 😉❤️";
-        }
-      } else {
-        locked = true;
-        flipTimeout = setTimeout(() => {
-          hide(previousCard);
-          hide(card);
-          locked = false;
-        }, 850);
-      }
-    }
-
-    function startGame() {
-      clearInterval(clock);
-      clearTimeout(flipTimeout);
-      firstCard = null;
-      locked = false;
-      moves = 0;
-      pairs = 0;
-      startedAt = null;
-      movesLabel.textContent = "0";
-      timeLabel.textContent = "0:00";
-      message.textContent = "Tap a card to start.";
-      board.replaceChildren();
-
-      const deck = [...symbols, ...symbols];
-
-      for (let i = deck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [deck[i], deck[j]] = [deck[j], deck[i]];
-      }
-
-      deck.forEach(symbol => {
-        const card = document.createElement("button");
-        card.type = "button";
-        card.className = "memory-card";
-        card.dataset.symbol = symbol;
-        hide(card);
-        card.addEventListener("click", () => chooseCard(card));
-        board.appendChild(card);
+    if (previous.dataset.symbol === card.dataset.symbol) {
+      [previous, card].forEach(item => {
+        item.classList.add("matched");
+        item.disabled = true;
       });
+
+      pairsText.textContent = ++pairs;
+      status.textContent = "A match. Just like us 😉";
+
+      if (pairs === 8) {
+        pauseClock();
+        status.textContent =
+          `You did it! ${moves} moves in ${timeText.textContent}.`;
+        reward.hidden = false;
+        celebrate();
+        reward.scrollIntoView({
+          behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "instant" : "smooth",
+          block: "nearest"
+        });
+      }
+    } else {
+      locked = true;
+      status.textContent = "Not quite. I'll give you another chance.";
+
+      flipTimeout = setTimeout(() => {
+        flip(previous, false);
+        flip(card, false);
+        locked = false;
+      }, 950);
+    }
+  }
+
+  function resetGame() {
+    pauseClock();
+    clearTimeout(flipTimeout);
+    clearTimeout(confettiTimeout);
+    first = null;
+    locked = false;
+    moves = 0;
+    pairs = 0;
+    elapsed = 0;
+    runningSince = null;
+
+    movesText.textContent = "0";
+    pairsText.textContent = "0";
+    timeText.textContent = "0:00";
+    status.textContent = "Your first move, princess.";
+    reward.hidden = true;
+    confetti.replaceChildren();
+    board.replaceChildren();
+
+    const deck = [...symbols, ...symbols];
+
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [deck[i], deck[j]] = [deck[j], deck[i]];
     }
 
-    restart.addEventListener("click", startGame);
-    startGame();
-  })();
+    deck.forEach((symbol, index) => {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "mm-card";
+      card.dataset.symbol = symbol;
+      card.style.setProperty("--delay", index * 25 + "ms");
+      card.setAttribute("aria-label", "Hidden card");
+
+      const inner = document.createElement("span");
+      inner.className = "mm-inner";
+      inner.setAttribute("aria-hidden", "true");
+
+      const front = document.createElement("span");
+      front.className = "mm-face mm-front";
+      front.textContent = "♡";
+
+      const back = document.createElement("span");
+      back.className = "mm-face mm-back";
+      back.textContent = symbol;
+
+      inner.append(front, back);
+      card.append(inner);
+      card.addEventListener("click", () => choose(card));
+      board.appendChild(card);
+    });
+
+    modal.scrollTop = 0;
+  }
+
+  document.getElementById("memoryLaunch").addEventListener("click", () => {
+    oldOverflow = document.body.style.overflow;
+    modal.showModal();
+    document.body.style.overflow = "hidden";
+
+    if (moves > 0 || first) resumeClock();
+  });
+
+  document.getElementById("mmClose").addEventListener("click", () => {
+    modal.close();
+  });
+
+  modal.addEventListener("close", () => {
+    pauseClock();
+    document.body.style.overflow = oldOverflow;
+    document.getElementById("memoryLaunch").focus();
+  });
+
+  document.getElementById("mmRestart").addEventListener("click", resetGame);
+  document.getElementById("mmAgain").addEventListener("click", resetGame);
+
+  resetGame();
+})();
+
 </script>
 </body>
 
