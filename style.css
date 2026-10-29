@@ -884,3 +884,55 @@ body {background:#08090a; font-family:Georgia,serif;}
 .haunt-paused #hauntedScenery *, .haunt-paused .blood-drips i,.haunt-paused body:before{animation-play-state:paused!important}
 @media(max-width:600px){.intro{padding-top:50px}.intro h1{font-size:48px;letter-spacing:-2px}.cobweb{width:190px;opacity:.75}.hanging-spider{left:7%;width:38px}.specter-one{left:-20px;width:70px}.specter-two{right:-15px;width:58px}.blood-hand{width:95px}.hand-two{width:70px}.envelope,.envelope.final{min-height:165px}.house-door{width:180px;height:440px;top:18vh}.small-text{font-size:9px;letter-spacing:1.8px}#memoryInvite{flex-wrap:wrap}#memoryLaunch{width:100%}}
 @media(prefers-reduced-motion:reduce){#hauntedScenery *, .blood-drips i{animation:none!important}.watching-eyes{opacity:.3}}
+/* Haunted Ayesha and Ziyaad buttons */
+
+#ayeshaChoice,
+#ziyaadChoice {
+    position: relative;
+    overflow: hidden;
+    min-width: 150px;
+    padding: 17px 25px;
+    border: 1px solid #85313d;
+    border-radius: 3px;
+    background:
+        linear-gradient(165deg, #ffffff06, transparent 45%),
+        linear-gradient(#291318, #100b0d);
+    color: #ead7c6;
+    font-family: Georgia, serif;
+    font-size: 17px;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px #000;
+    box-shadow:
+        inset 0 0 18px #0009,
+        0 7px 18px #0008;
+    cursor: pointer;
+    transition: background .25s, box-shadow .25s;
+}
+
+/* Blood running down the edges */
+
+#ayeshaChoice::before,
+#ziyaadChoice::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 13px;
+    width: 5px;
+    height: 24px;
+    border-radius: 0 0 5px 5px;
+    background: #8b142b;
+    box-shadow:
+        11px -9px #650d20,
+        23px -4px #791226;
+    pointer-events: none;
+}
+
+#ayeshaChoice:hover,
+#ziyaadChoice:hover {
+    background: linear-gradient(#441821, #190c11);
+    border-color: #cd626c;
+    box-shadow:
+        inset 0 0 20px #0008,
+        0 0 24px #9d183d55;
+}
+
