@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> </title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #000;
+  color: #ccc;
+  font-family: monospace;
+  overflow: hidden;
+}
+
+#stage {
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+  position: relative;
+}
+
+#intro { position: relative; z-index: 4; }
+#intro p { color: #777; font-size: 12px; }
+
+button {
+  background: #090909;
+  color: #aaa;
+  border: 1px solid #444;
+  padding: 14px 28px;
+  font: inherit;
+  cursor: pointer;
+}
+
+#exit {
+  position: fixed;
+  right: 14px;
+  top: 14px;
+  z-index: 20;
+  padding: 9px 12px;
+  font-size: 12px;
+}
+
+#message {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  font-size: clamp(25px, 7vw, 64px);
+  letter-spacing: 5px;
+  color: #c5c0ba;
+}
+
+#face {
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background: #080303;
+  z-index: 3;
+}
+
+svg {
+  width: min(88vw, 600px);
+  height: 85svh;
+  filter: drop-shadow(0 0 25px #370000);
+}
+
+#noise {
+  position: absolute;
+  inset: -20%;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: repeating-linear-gradient(
+    transparent 0 3px,
+    #ffffff12 3px 4px
+  );
+}
+
+.glitch #noise {
+  opacity: .3;
+  animation: drift .7s steps(3) infinite;
+}
+
+.glitch #message {
+  text-shadow: -5px 0 #a00000, 5px 0 #007c85;
+  animation: distort .65s steps(2) infinite;
+}
+
+@keyframes distort {
+  0%, 100% { transform: translate(0); }
+  25% { transform: translate(-9px, 3px) skewX(-4deg); }
+  60% { transform: translate(7px, -3px); }
+  80% { transform: translate(-3px, 0) skewX(5deg); }
+}
+
+@keyframes drift {
+  from { transform: translateY(-12px); }
+  to { transform: translateY(12px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch #noise, .glitch #message { animation: none; }
+}
+</style>
+</head>
+<body>
+<button id="exit">Exit</button>
+
+<div id="stage">
+  <div id="intro">
+    <button id="enter">ENTER</button>
+    <p>Horror short · sound · sudden scary image</p>
+  </div>
+
+  <div id="message" role="status"></div>
+
+  <div id="face" aria-hidden="true">
+    <svg viewBox="0 0 400 500">
+      <defs>
+        <radialGradient id="skin">
+          <stop stop-color="#bab6a9"/>
+          <stop offset=".65" stop-color="#706e65"/>
+          <stop offset="1" stop-color="#171717"/>
+        </radialGradient>
+      </defs>
+
+      <path fill="url(#skin)"
+        d="M200 20 C70 0 30 110 55 260
+           C65 380 135 485 200 490
+           C275 475 340 360 350 240
+           C365 105 320 15 200 20Z"/>
+
+      <path fill="#050505"
+        d="M77 165 Q125 105 174 170
+           Q153 233 105 213Z
+           M225 170 Q276 108 325 160
+           L302 214 Q249 234 225 170Z"/>
+
+      <ellipse cx="131" cy="178" rx="5" ry="8" fill="#8b1515"/>
+      <ellipse cx="271" cy="178" rx="5" ry="8" fill="#8b1515"/>
+
+      <path fill="#242320" d="M200 198 L177 274 L220 266Z"/>
+
+      <path fill="#030303"
+        d="M154 310 Q200 270 245 312
+           Q268 427 199 454
+           Q137 423 154 310Z"/>
+
+      <path fill="none" stroke="#34332e" stroke-width="4"
+        d="M92 240 L121 279 L108 323
+           M304 235 L278 282 L291 320
+           M156 61 L170 109
+           M248 67 L231 115"/>
+    </svg>
+  </div>
+
+  <div id="noise"></div>
+</div>
+
+<script>
+const stage = document.getElementById("stage");
+const intro = document.getElementById("intro");
+const message = document.getElementById("message");
+const face = document.getElementById("face");
+const enter = document.getElementById("enter");
+
+let audio;
+let master;
+let timers = [];
+let running = false;
+let started = false;
+
+function later(milliseconds, action) {
+  timers.push(setTimeout(() => {
+    if (running) action();
+  }, milliseconds));
+}
+
+function words(text) {
+  message.textContent = text;
+}
+
+function drone(frequency, volume) {
+  const oscillator = audio.createOscillator();
+  const gain = audio.createGain();
+
+  oscillator.type = "sine";
+  oscillator.frequency.value = frequency;
+  gain.gain.value = volume;
+
+  oscillator.connect(gain);
+  gain.connect(master);
+  oscillator.start();
+}
+
+function sting() {
+  if (!audio || audio.state !== "running") return;
+
+  const oscillator = audio.createOscillator();
+  const gain = audio.createGain();
+  const now = audio.currentTime;
+
+  oscillator.type = "sawtooth";
+  oscillator.frequency.setValueAtTime(150, now);
+  oscillator.frequency.exponentialRampToValueAtTime(43, now + .8);
+
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(.13, now + .04);
+  gain.gain.exponentialRampToValueAtTime(.001, now + .9);
+
+  oscillator.connect(gain);
+  gain.connect(master);
+  oscillator.start(now);
+  oscillator.stop(now + 1);
+}
+
+function stop() {
+  running = false;
+  timers.forEach(clearTimeout);
+  timers = [];
+  stage.classList.remove("glitch");
+  intro.style.display = "none";
+  face.style.display = "none";
+  words("");
+
+  if (audio && audio.state !== "closed") {
+    audio.close().catch(() => {});
+  }
+}
+
+enter.onclick = async () => {
+  if (started) return;
+  started = true;
+  running = true;
+  intro.style.display = "none";
+
+  try {
+    const AudioEngine = window.AudioContext || window.webkitAudioContext;
+    audio = new AudioEngine();
+    await audio.resume();
+
+    if (!running) return;
+
+    master = audio.createGain();
+    master.gain.value = .55;
+    master.connect(audio.destination);
+
+    drone(48, .12);
+    drone(51, .08);
+    drone(96, .025);
+  } catch {
+    // Continue silently if audio is unavailable.
+  }
+
+  if (!running) return;
+
+  // Blank screen with an ominous drone.
+  later(6000, () => words("."));
+  later(7300, () => words(""));
+
+  // Sudden face reveal.
+  later(11000, () => {
+    face.style.display = "grid";
+    sting();
+  });
+
+  later(12000, () => {
+    face.style.display = "none";
+    stage.classList.add("glitch");
+    words("THAT WAS NOT THE END");
+  });
+
+  later(14500, () => words("SOMETHING CAME THROUGH"));
+  later(17000, () => words("DO NOT ANSWER IT"));
+  later(19500, () => words("IT KNOWS THE WAY BACK"));
+
+  later(22000, () => {
+    stage.classList.remove("glitch");
+    words("");
+  });
+
+  later(24500, () => words("You can close this now."));
+  later(27500, stop);
+};
+
+document.getElementById("exit").onclick = stop;
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") stop();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && running) stop();
+});
+</script>
+</body>
+</html>
