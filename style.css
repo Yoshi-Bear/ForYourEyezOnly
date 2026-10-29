@@ -356,10 +356,11 @@
 @media (max-width: 600px) {
     .prank-terminal {
         padding: 25px 15px;
-        /* ========================================
+    }
+}
+
+/* ========================================
    FOR YOUR EYES ONLY — HAUNTED EDITION
-   Paste below the existing CSS
-   ======================================== */
 
 :root {
     --bg: #090708;
@@ -835,5 +836,4 @@ input:focus-visible {
         transition: none;
     }
 }
-    }
-}
+    
