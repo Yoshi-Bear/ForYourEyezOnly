@@ -212,7 +212,7 @@ function createHeart() {
     }, 9000);
 }
 
-setInterval(createHeart, 900);
+
 function createFirework() {
 
     const fireworks = document.getElementById("fireworks");
@@ -462,12 +462,10 @@ function createBinaryDigit() {
     }, 12000);
 }
 
-setInterval(createBinaryDigit, 250);
+
 
 // Show some numbers immediately
-for (let i = 0; i < 25; i++) {
-    setTimeout(createBinaryDigit, i * 80);
-}
+
 
 /* =====================================
    MISSION 02 — PROJECT AYESHA
@@ -617,3 +615,17 @@ document.addEventListener("keydown", function (event) {
         openPrankMission();
     }
 });
+/* Haunted scenery controls — independent of the letters and games. */
+(() => {
+ const toggle = document.getElementById('atmosphereToggle');
+ toggle.addEventListener('click', () => {
+  const paused = document.body.classList.toggle('haunt-paused');
+  toggle.textContent = paused ? 'Resume hauntings' : 'Pause hauntings';
+  toggle.setAttribute('aria-pressed', String(paused));
+ });
+ document.addEventListener('keydown', e => {
+  if(e.key !== 'Escape') return;
+  overlay.classList.remove('active');
+  resetSecretMission(); closePrankMission();
+ });
+})();
