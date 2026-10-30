@@ -326,3 +326,293 @@ html[data-theme="ocean"] #dashRadio .album-art {
         animation: none !important;
     }
 }
+/* ======================================
+   THE ENTIRE MUSIC BAR AS A THEMED RADIO
+   ====================================== */
+
+#dashRadio.music-card {
+    --set-body: #292344;
+    --set-edge: #8570b8;
+    --set-screen: #121527;
+    --set-text: #e6dcff;
+    --set-muted: #a89ac9;
+    --set-light: #92e5ff;
+    --set-button: #6950a4;
+    --set-trim: #b4a0d8;
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    gap: 18px;
+    padding: 22px 24px;
+    border: 4px solid var(--set-edge);
+    border-radius: 12px;
+
+    background:
+        linear-gradient(135deg, #ffffff10, transparent 45%),
+        var(--set-body);
+
+    box-shadow:
+        inset 0 0 0 2px #0005,
+        inset 0 -5px 12px #0004,
+        0 9px 24px #0005;
+}
+
+/* Decorative horizontal tuning scale */
+#dashRadio.music-card::before {
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 24px;
+    right: 24px;
+    height: 4px;
+
+    background: repeating-linear-gradient(
+        90deg,
+        var(--set-trim) 0 1px,
+        transparent 1px 9px
+    );
+
+    opacity: .45;
+    pointer-events: none;
+}
+
+/* Small illuminated power indicator */
+#dashRadio.music-card::after {
+    content: "";
+    position: absolute;
+    bottom: 8px;
+    right: 14px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--set-light);
+    box-shadow: 0 0 7px var(--set-light);
+    pointer-events: none;
+}
+
+/* Recessed display in the centre */
+#dashRadio .song-info {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    min-width: 0;
+    padding: 12px 16px;
+    border: 1px solid var(--set-edge);
+    border-radius: 4px;
+    background:
+        linear-gradient(#ffffff04, transparent),
+        var(--set-screen);
+
+    box-shadow:
+        inset 0 2px 9px #0008,
+        0 1px #ffffff0b;
+}
+
+#dashRadio .song-info h2 {
+    color: var(--set-text);
+    font: 700 15px/1.4 Arial, sans-serif;
+    letter-spacing: .6px;
+    margin: 0 0 5px;
+    text-shadow: 0 0 12px #ffffff10;
+}
+
+#dashRadio .song-info p {
+    color: var(--set-muted);
+    font: 11px/1.5 Arial, sans-serif;
+    margin: 0;
+}
+
+/* Large physical play/pause knob */
+#dashRadio #playButton {
+    width: 53px;
+    height: 53px;
+    flex-shrink: 0;
+
+    border: 3px solid var(--set-trim);
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle at 35% 25%,
+            #ffffff35, transparent 55%),
+        var(--set-button);
+
+    color: var(--set-text);
+    font-size: 18px;
+
+    box-shadow:
+        inset 0 0 0 2px #0004,
+        0 4px 7px #0007;
+
+    transition: filter .2s, box-shadow .2s;
+}
+
+#dashRadio #playButton:hover {
+    transform: none;
+    background:
+        radial-gradient(circle at 35% 25%,
+            #ffffff45, transparent 55%),
+        var(--set-button);
+    filter: brightness(1.15);
+    box-shadow:
+        inset 0 0 0 2px #0004,
+        0 0 13px var(--set-light);
+}
+
+/* ARCADE: violet shell and blue illuminated display */
+
+html[data-theme="dashboard"] #dashRadio.music-card {
+    --set-body: #302451;
+    --set-edge: #76609f;
+    --set-screen: #11172c;
+    --set-text: #e7e0ff;
+    --set-muted: #a5b7d5;
+    --set-light: #75e4ff;
+    --set-button: #6652ac;
+    --set-trim: #b5a0e0;
+
+    background:
+        linear-gradient(120deg, #9b55db22, transparent 60%),
+        linear-gradient(145deg, #352953, #1c203b);
+}
+
+/* HAUNTED: old wooden cabinet, brass and amber */
+
+html[data-theme="haunted"] #dashRadio.music-card {
+    --set-body: #35251b;
+    --set-edge: #59412b;
+    --set-screen: #12130b;
+    --set-text: #e8ca8e;
+    --set-muted: #ab986e;
+    --set-light: #e6ab48;
+    --set-button: #55452c;
+    --set-trim: #a48a57;
+
+    border-width: 7px;
+    border-radius: 17px 17px 5px 5px;
+
+    background:
+        linear-gradient(
+            108deg,
+            transparent 84%,
+            #570c19aa 85% 87%,
+            transparent 88%
+        ),
+        repeating-linear-gradient(
+            90deg,
+            #312218 0 6px,
+            #402d1e 7px 10px,
+            #35251a 11px 18px
+        );
+
+    box-shadow:
+        inset 0 0 0 2px #ae8b4e33,
+        inset 0 0 30px #0009,
+        0 12px 28px #0009;
+}
+
+html[data-theme="haunted"] #dashRadio .song-info {
+    border-color: #887143;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0 3px,
+            #d7af5410 4px 5px
+        ),
+        radial-gradient(ellipse, #303019, #10120a);
+
+    box-shadow:
+        inset 0 0 18px #000a,
+        0 0 12px #b9822310;
+}
+
+html[data-theme="haunted"] #dashRadio .song-info h2 {
+    font-family: Georgia, serif;
+    font-weight: normal;
+    font-variant: small-caps;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 9px #dba34744;
+}
+
+html[data-theme="haunted"] #dashRadio .song-info p {
+    font-family: Georgia, serif;
+}
+
+/* AFTER HOURS: burgundy leather and rose gold */
+
+html[data-theme="rose"] #dashRadio.music-card {
+    --set-body: #542c40;
+    --set-edge: #b17e7a;
+    --set-screen: #281b25;
+    --set-text: #f5dfce;
+    --set-muted: #c8a4ac;
+    --set-light: #ffd4a0;
+    --set-button: #92556b;
+    --set-trim: #e3baa0;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            #ffffff03 0 1px,
+            transparent 1px 3px
+        ),
+        linear-gradient(135deg, #69394f, #3d2334);
+}
+
+/* DEEP BLUE: teal enamel, silver and aqua */
+
+html[data-theme="ocean"] #dashRadio.music-card {
+    --set-body: #15485b;
+    --set-edge: #60939f;
+    --set-screen: #082733;
+    --set-text: #d7fbf7;
+    --set-muted: #91bec7;
+    --set-light: #77fff0;
+    --set-button: #266a7e;
+    --set-trim: #b6d8db;
+
+    background:
+        linear-gradient(120deg, #ffffff12, transparent 55%),
+        linear-gradient(145deg, #24677a, #103449);
+}
+
+/* Mobile proportions */
+
+@media (max-width: 500px) {
+    #dashRadio.music-card {
+        gap: 10px;
+        padding: 19px 11px;
+        border-width: 3px;
+    }
+
+    html[data-theme="haunted"] #dashRadio.music-card {
+        border-width: 5px;
+    }
+
+    #dashRadio .song-info {
+        padding: 10px;
+    }
+
+    #dashRadio .song-info h2 {
+        font-size: 12px;
+        letter-spacing: .2px;
+    }
+
+    #dashRadio .song-info p {
+        font-size: 9px;
+    }
+
+    #dashRadio #playButton {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+        border-width: 2px;
+    }
+
+    #dashRadio .album-art {
+        width: 58px;
+        height: 44px;
+    }
+}
