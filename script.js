@@ -629,3 +629,110 @@ document.addEventListener("keydown", function (event) {
   resetSecretMission(); closePrankMission();
  });
 })();
+/* NEW AYESHA / ZIYAAD BUTTON BEHAVIOUR */
+(() => {
+    const oldAyesha = document.getElementById("ayeshaChoice");
+    const oldZiyaad = document.getElementById("ziyaadChoice");
+    const result = document.getElementById("attractionResult");
+
+    if (!oldAyesha || !oldZiyaad || !result) return;
+
+    // Remove the previous escape/click listeners.
+    const ayesha = oldAyesha.cloneNode(true);
+    const ziyaad = oldZiyaad.cloneNode(true);
+
+    oldAyesha.replaceWith(ayesha);
+    oldZiyaad.replaceWith(ziyaad);
+
+    ayesha.removeAttribute("style");
+    ziyaad.removeAttribute("style");
+
+    ayesha.textContent = "♡ Ayesha";
+    ziyaad.textContent = "♛ Ziyaad";
+
+    let escapes = 0;
+    let ready = false;
+    let moving = false;
+    let settleTimer;
+
+    const teasing = [
+        "Too slow 😂",
+        "Almost had me.",
+        "You’re really trying, huh?",
+        "Okay, okay. Catch me now 😏"
+    ];
+
+    function settle() {
+        clearTimeout(settleTimer);
+        ayesha.removeAttribute("style");
+        moving = false;
+
+        if (escapes >= 4) {
+            ready = true;
+            ayesha.classList.add("catchable");
+        }
+    }
+
+    function escape() {
+        if (ready || moving) return;
+
+        moving = true;
+        escapes++;
+
+        const width = ayesha.offsetWidth;
+        const height = ayesha.offsetHeight;
+
+        const maxX = Math.max(8, window.innerWidth - width - 8);
+        const maxY = Math.max(8, window.innerHeight - height - 8);
+
+        ayesha.style.position = "fixed";
+        ayesha.style.left =
+            (8 + Math.random() * Math.max(0, maxX - 8)) + "px";
+        ayesha.style.top =
+            (8 + Math.random() * Math.max(0, maxY - 8)) + "px";
+        ayesha.style.zIndex = "10000";
+
+        result.textContent = teasing[escapes - 1];
+
+        settleTimer = setTimeout(() => {
+            moving = false;
+
+            if (escapes >= 4) {
+                settle();
+            }
+        }, 650);
+    }
+
+    ayesha.addEventListener("mouseenter", escape);
+
+    ayesha.addEventListener("touchstart", event => {
+        if (ready) return;
+
+        event.preventDefault();
+        escape();
+    }, { passive: false });
+
+    ayesha.addEventListener("click", event => {
+        // Keyboard users can choose without chasing.
+        if (!ready && event.detail !== 0) {
+            escape();
+            return;
+        }
+
+        settle();
+        result.textContent =
+            "Fine. You win. Don’t let it go to your head 😂❤️";
+    });
+
+    ziyaad.addEventListener("click", () => {
+        result.textContent =
+            "Correct. Finally, something we agree on 😌";
+    });
+
+    window.addEventListener("resize", settle);
+
+    // Stop the button lingering over another dashboard section.
+    document.querySelectorAll(".dash-nav-button").forEach(button => {
+        button.addEventListener("click", settle);
+    });
+})();
