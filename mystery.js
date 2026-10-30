@@ -10,7 +10,7 @@
  function revealClue(){if(state.clue)return;state.clue=true;save();tell('Behind the portrait: “Some things only appear in the light.” Move the candle.');$('hmShadow').style.opacity='.7';setTimeout(()=>$('hmShadow').style.opacity='0',1800)}
  function update(el){
   if(el===portrait&&Math.abs(portrait.offsetLeft-scene.clientWidth*.08)>65)revealClue();
-  if(el===candle){const c=center(candle);$('hmLight').style.left=c.x-125+'px';$('hmLight').style.top=c.y-145+'px';const k=center(key);if(state.clue&&!state.key&&Math.hypot(c.x-k.x,c.y-22-k.y)<125){state.key=true;key.hidden=false;save();tell('Something catches the light. Drag the key onto the sealed letter.')}}
+  if(el===candle){const c=center(candle);$('hmLight').style.left=c.x-125+'px';$('hmLight').style.top=c.y-145+'px';const k=key.hidden?{x:scene.clientWidth*.79+30,y:115}:center(key);if(state.clue&&!state.key&&Math.hypot(c.x-k.x,c.y-22-k.y)<125){state.key=true;key.hidden=false;save();tell('Something catches the light. Drag the key onto the sealed letter.')}}
  }
  function unlock(){if(!state.key||state.unlocked)return;state.unlocked=true;save();key.hidden=true;tell('The lock gives way. Open the letter.');envelope.querySelector('small').textContent='The seal is broken.';openLetter()}
  function drop(el){if(el!==key)return;const a=el.getBoundingClientRect(),b=envelope.getBoundingClientRect();if(a.right>b.left&&a.left<b.right&&a.bottom>b.top&&a.top<b.bottom)unlock();else tell('Bring the key to the bloodstained envelope.');}
