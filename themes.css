@@ -124,3 +124,205 @@ html[data-theme="ocean"] #dashRadio .album-art {
 html[data-theme="ocean"] #dashRadio .album-art::after {
     content: "🌊";
 }
+/* THEMED MINIATURE RADIOS */
+
+/* Keep the original element and its secret-click listener */
+#dashRadio .album-art {
+    --radio-body: #443281;
+    --radio-edge: #ac83ef;
+    --radio-speaker: #18172e;
+    --radio-grille: #796aab;
+    --radio-dial: #b6a3df;
+    --radio-light: #79e5ff;
+
+    position: relative;
+    isolation: isolate;
+    width: 76px;
+    height: 52px;
+    flex-shrink: 0;
+    overflow: visible;
+    border: 2px solid var(--radio-edge);
+    border-radius: 7px;
+    background:
+        linear-gradient(135deg, #ffffff15, transparent 45%),
+        var(--radio-body);
+    color: var(--radio-light);
+    box-shadow:
+        inset 0 0 0 3px #0002,
+        0 4px 8px #0005;
+    text-shadow: none;
+    transition: box-shadow .25s, border-color .25s;
+}
+
+/* Remove the previous emoji */
+#dashRadio .album-art::after {
+    content: "";
+    position: absolute;
+    inset: auto;
+    top: 8px;
+    right: 7px;
+    width: 15px;
+    height: 5px;
+    display: block;
+    border: 1px solid #ffffff25;
+    border-radius: 1px;
+    background: var(--radio-light);
+    box-shadow: 0 0 7px var(--radio-light);
+    filter: none;
+    font-size: 0;
+    pointer-events: none;
+}
+
+/* Speaker grille */
+#dashRadio .album-art::before {
+    content: "";
+    position: absolute;
+    inset: 7px 29px 7px 6px;
+    border: 1px solid var(--radio-grille);
+    border-radius: 4px;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0 3px,
+            var(--radio-grille) 3px 4px
+        ),
+        var(--radio-speaker);
+    box-shadow: inset 0 2px 5px #0006;
+    pointer-events: none;
+}
+
+/* Tuning knob */
+#dashRadio .album-art .radio-dial {
+    visibility: visible;
+    display: block;
+    position: absolute;
+    right: 7px;
+    bottom: 7px;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    border: 2px solid #0005;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--radio-dial),
+        #ffffffbb,
+        var(--radio-dial),
+        #0006,
+        var(--radio-dial)
+    );
+    box-shadow: 0 2px 3px #0007;
+    pointer-events: none;
+}
+
+#dashRadio .album-art .radio-dial::after {
+    content: "";
+    display: block;
+    width: 2px;
+    height: 6px;
+    margin: 1px auto 0;
+    background: #17202b;
+}
+
+/* Arcade — violet casing and neon-blue display */
+html[data-theme="dashboard"] #dashRadio .album-art {
+    --radio-body: #443281;
+    --radio-edge: #ac83ef;
+    --radio-speaker: #18172e;
+    --radio-grille: #796aab;
+    --radio-dial: #b6a3df;
+    --radio-light: #79e5ff;
+}
+
+/* Haunted — aged wood, brass knob and amber display */
+html[data-theme="haunted"] #dashRadio .album-art {
+    --radio-body: #38271e;
+    --radio-edge: #866444;
+    --radio-speaker: #100e0a;
+    --radio-grille: #756142;
+    --radio-dial: #a58b54;
+    --radio-light: #d29a45;
+
+    border-radius: 15px 15px 4px 4px;
+    background:
+        linear-gradient(
+            112deg,
+            transparent 63%,
+            #650c1d 65% 69%,
+            transparent 71%
+        ),
+        repeating-linear-gradient(
+            90deg,
+            #35251b 0 5px,
+            #463022 6px 8px,
+            #302218 9px 13px
+        );
+    box-shadow:
+        inset 0 0 12px #0009,
+        0 4px 8px #0008;
+}
+
+/* After Hours — burgundy leather and rose-gold trim */
+html[data-theme="rose"] #dashRadio .album-art {
+    --radio-body: #633149;
+    --radio-edge: #d8a58f;
+    --radio-speaker: #2b1724;
+    --radio-grille: #a5707f;
+    --radio-dial: #dcb59a;
+    --radio-light: #ffd4ae;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            #ffffff03 0 1px,
+            transparent 1px 3px
+        ),
+        linear-gradient(135deg, #75405a, #482234);
+}
+
+/* Deep Blue — teal enamel and brushed silver */
+html[data-theme="ocean"] #dashRadio .album-art {
+    --radio-body: #15536a;
+    --radio-edge: #83bcc5;
+    --radio-speaker: #092b38;
+    --radio-grille: #427b89;
+    --radio-dial: #b4d2d5;
+    --radio-light: #77fff0;
+
+    background: linear-gradient(135deg, #26758a, #10394e);
+}
+
+/* A subtle glow while the song is playing */
+#dashRadio .album-art.playing {
+    animation: themedRadioGlow 2.5s ease-in-out infinite;
+}
+
+#dashRadio .album-art:hover {
+    transform: none;
+    border-color: var(--radio-light);
+}
+
+@keyframes themedRadioGlow {
+    0%, 100% {
+        box-shadow:
+            inset 0 0 0 3px #0002,
+            0 4px 8px #0005;
+    }
+    50% {
+        box-shadow:
+            inset 0 0 0 3px #0002,
+            0 0 15px var(--radio-light);
+    }
+}
+
+@media (max-width: 500px) {
+    #dashRadio .album-art {
+        width: 68px;
+        height: 48px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #dashRadio .album-art.playing {
+        animation: none !important;
+    }
+}
