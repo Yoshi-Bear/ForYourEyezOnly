@@ -99,14 +99,13 @@
 
         <div class="attraction-buttons">
 
-         <button id="ayeshaChoice" class="attraction-button">
-    ☾ Ayesha
-</button>
+            <button id="ayeshaChoice" class="attraction-button">
+                💗 Ayesha
+            </button>
 
-<button id="ziyaadChoice" class="attraction-button">
-    ☠ Ziyaad
-</button>
-            
+            <button id="ziyaadChoice" class="attraction-button">
+                😎 Ziyaad
+            </button>
 
         </div>
 
@@ -982,6 +981,37 @@ document.body.prepend(timer);
 </script>
 </section>
 <link rel="stylesheet" href="style.css?v=haunted-house-3">
+
+<section id="houseMystery" aria-labelledby="houseMysteryTitle">
+ <p class="hm-eyebrow">SOMETHING WAS LEFT IN THE EAST WING</p>
+ <h2 id="houseMysteryTitle">The room that remembers.</h2>
+ <p class="hm-intro">A portrait. A candle. A letter no one admits to writing.<br>Move things. Look closer.</p>
+ <div id="hmScene">
+  <div id="hmShadow" aria-hidden="true">◉ ◉</div>
+  <p id="hmNote">Some things only appear in the light.<br><small>Search the right side of the room.</small></p>
+  <button id="hmPortrait" class="hm-movable" aria-label="Move the portrait aside" type="button"><span class="hm-portrait-art" aria-hidden="true"></span><small>A PORTRAIT WITHOUT A NAME</small></button>
+  <button id="hmKey" type="button" aria-label="Pick up the hidden key" hidden>⚿</button>
+  <button id="hmCandle" class="hm-movable" type="button" aria-label="Move the candle to search the room"><span aria-hidden="true">🕯</span></button>
+  <button id="hmEnvelope" type="button"><span aria-hidden="true">✦</span><strong>THE SEALED LETTER</strong><small>Find what opens it.</small></button>
+  <div id="hmLight" aria-hidden="true"></div>
+ </div>
+ <p id="hmHint" role="status">The portrait is crooked. Perhaps it can be moved.</p>
+ <p class="hm-help">Drag with your mouse or finger. Keyboard: focus an object and use the arrow keys. Enter moves the portrait or uses a revealed key.</p>
+ <button id="hmReset" type="button">Reset this mystery</button>
+</section>
+<dialog id="hmDialog" aria-labelledby="hmDialogTitle">
+ <button id="hmClose" type="button" aria-label="Close letter">×</button>
+ <p class="hm-eyebrow">THE LETTER WAS WAITING FOR YOU</p>
+ <h2 id="hmDialogTitle">Read what was left behind.</h2>
+ <p id="hmStory"></p><p id="hmRiddle"></p>
+ <form id="hmForm"><label for="hmAnswer">Your answer</label><input id="hmAnswer" autocomplete="off" required><button type="submit">Break the next seal</button></form>
+ <div id="hmPuzzle" hidden><p>Restore the portrait. Select two pieces to swap them.</p><div id="hmTiles" role="group" aria-label="Portrait puzzle"></div><button id="hmPuzzleHint" type="button">Read the markings on the back</button><p id="hmTileHint" hidden>The small numbers mark the order: 1–6, left to right, top to bottom.</p></div>
+ <div id="hmReward" hidden><p class="hm-eyebrow">THE HOUSE HAS ACCEPTED YOUR ANSWERS</p><h3>YOU HAVE UNLOCKED<br>A YES DAY.</h3><p>For one whole day, I can’t say no to anything you ask.</p><p>I’m already regretting putting this on the website.</p><p>Don’t get carried away, dingus. Our boundaries and budget still count.</p><small>Screenshot this. We’ll pick the day together.</small></div>
+ <p id="hmFeedback" role="status"></p>
+</dialog>
+<link rel="stylesheet" href="mystery.css?v=yesday1">
+<script src="mystery.js?v=yesday1"></script>
+
 </body>
 
 </html>

@@ -1,0 +1,37 @@
+(() => {
+ const $=id=>document.getElementById(id),scene=$('hmScene'),portrait=$('hmPortrait'),candle=$('hmCandle'),key=$('hmKey'),envelope=$('hmEnvelope'),dialog=$('hmDialog'),hint=$('hmHint');
+ const storageKey='fy eyes-house-mystery-v1';
+ let state={clue:false,key:false,unlocked:false,stage:0,order:[3,0,5,1,4,2],won:false};
+ try{const saved=JSON.parse(localStorage.getItem(storageKey));if(saved&&Number.isInteger(saved.stage)&&saved.stage>=0&&saved.stage<=3&&Array.isArray(saved.order)&&saved.order.length===6&&new Set(saved.order).size===6&&saved.order.every(n=>Number.isInteger(n)&&n>=0&&n<6))state={...state,...saved};}catch{}
+ function save(){try{localStorage.setItem(storageKey,JSON.stringify(state));}catch{}}
+ function tell(t){hint.textContent=t}
+ function move(el,x,y){el.style.left=Math.max(0,Math.min(scene.clientWidth-el.offsetWidth,x))+'px';el.style.top=Math.max(0,Math.min(scene.clientHeight-el.offsetHeight,y))+'px';}
+ function center(el){return {x:el.offsetLeft+el.offsetWidth/2,y:el.offsetTop+el.offsetHeight/2}}
+ function revealClue(){if(state.clue)return;state.clue=true;save();tell('Behind the portrait: “Some things only appear in the light.” Move the candle.');$('hmShadow').style.opacity='.7';setTimeout(()=>$('hmShadow').style.opacity='0',1800)}
+ function update(el){
+  if(el===portrait&&Math.abs(portrait.offsetLeft-scene.clientWidth*.08)>65)revealClue();
+  if(el===candle){const c=center(candle);$('hmLight').style.left=c.x-125+'px';$('hmLight').style.top=c.y-145+'px';const k=center(key);if(state.clue&&!state.key&&Math.hypot(c.x-k.x,c.y-22-k.y)<125){state.key=true;key.hidden=false;save();tell('Something catches the light. Drag the key onto the sealed letter.')}}
+ }
+ function unlock(){if(!state.key||state.unlocked)return;state.unlocked=true;save();key.hidden=true;tell('The lock gives way. Open the letter.');envelope.querySelector('small').textContent='The seal is broken.';openLetter()}
+ function drop(el){if(el!==key)return;const a=el.getBoundingClientRect(),b=envelope.getBoundingClientRect();if(a.right>b.left&&a.left<b.right&&a.bottom>b.top&&a.top<b.bottom)unlock();else tell('Bring the key to the bloodstained envelope.');}
+ function draggable(el){let held=false,dx=0,dy=0,moved=false,startX=0,startY=0;
+  el.addEventListener('pointerdown',e=>{if(e.button!==0)return;held=true;moved=false;startX=e.clientX;startY=e.clientY;const b=el.getBoundingClientRect();dx=e.clientX-b.left;dy=e.clientY-b.top;el.setPointerCapture(e.pointerId)});
+  el.addEventListener('pointermove',e=>{if(!held)return;if(Math.hypot(e.clientX-startX,e.clientY-startY)>5)moved=true;const b=scene.getBoundingClientRect();move(el,e.clientX-b.left-scene.clientLeft-dx,e.clientY-b.top-scene.clientTop-dy);update(el)});
+  el.addEventListener('pointerup',()=>{if(!held)return;held=false;drop(el)});
+  el.addEventListener('pointercancel',()=>held=false);
+  el.addEventListener('click',e=>{if(moved){moved=false;return}if(el===portrait){move(portrait,scene.clientWidth-portrait.offsetWidth-12,12);revealClue()}if(el===key)unlock()});
+  el.addEventListener('keydown',e=>{const dirs={ArrowLeft:[-20,0],ArrowRight:[20,0],ArrowUp:[0,-20],ArrowDown:[0,20]};if(!dirs[e.key])return;e.preventDefault();move(el,el.offsetLeft+dirs[e.key][0],el.offsetTop+dirs[e.key][1]);update(el);drop(el)});
+ }
+ [portrait,candle,key].forEach(draggable);
+ const puzzles=[{story:'There were only two people in the house.\nEvery morning, three shadows crossed the hallway.',riddle:'I follow you in the light.\nI disappear in the dark.\nWhat am I?',answers:['shadow','a shadow','my shadow','your shadow']},{story:'The third shadow stayed after the lights went out.\nSomething scratched this into the wall.',riddle:'UIF NJSSPS\n\nEvery letter has taken one step too far.\nMove each one back.',answers:['the mirror','mirror']},{story:'Under the sheet, the mirror was warm.\nThese words appeared on the glass:',riddle:'EM EVAEL TON OD\n\nRead it as a reflection would.',answers:['do not leave me']}];
+ let selected=null;
+ function tiles(){const board=$('hmTiles');board.replaceChildren();state.order.forEach((piece,index)=>{const b=document.createElement('button');b.type='button';b.style.backgroundPosition=`${piece%3*50}% ${Math.floor(piece/3)*100}%`;b.setAttribute('aria-label',`Portrait piece ${piece+1}, position ${index+1}`);b.setAttribute('aria-pressed',String(selected===index));const n=document.createElement('small');n.textContent=piece+1;b.append(n);b.onclick=()=>{if(selected===null){selected=index;tiles();board.children[index].focus();return}if(selected===index){selected=null;tiles();board.children[index].focus();return}[state.order[selected],state.order[index]]=[state.order[index],state.order[selected]];selected=null;state.won=state.order.every((n,i)=>n===i);save();if(state.won){render();$('hmClose').focus()}else{tiles();board.children[index].focus()}};board.append(b)});}
+ function render(){const won=state.won,solving=state.stage<3&&!won;$('hmForm').hidden=!solving;$('hmPuzzle').hidden=solving||won;$('hmReward').hidden=!won;$('hmStory').hidden=won;$('hmRiddle').hidden=!solving;$('hmFeedback').textContent='';$('hmDialogTitle').textContent=won?'The house has kept its promise.':solving?'Read what was left behind.':'One last thing is broken.';if(solving){$('hmStory').textContent=puzzles[state.stage].story;$('hmRiddle').textContent=puzzles[state.stage].riddle;$('hmAnswer').value=''}else if(!won){$('hmStory').textContent='Six pieces were hidden inside the letter. Put them together to find what the house owes you.';tiles()}}
+ function openLetter(){if(!state.unlocked){tell(state.key?'The key belongs to this letter. Bring them together.':'The envelope is locked. Search behind the portrait.');return}if(!dialog.open){render();dialog.showModal();if(state.stage<3&&!state.won)$('hmAnswer').focus()}}
+ envelope.onclick=openLetter;$('hmClose').onclick=()=>dialog.close();
+ $('hmForm').onsubmit=e=>{e.preventDefault();if(state.stage>=3)return;const a=$('hmAnswer').value.trim().toLowerCase().replace(/[.!?]/g,'').replace(/\s+/g,' ');if(!puzzles[state.stage].answers.includes(a)){$('hmFeedback').textContent='A knock from inside the wall. That was not the answer.';$('hmAnswer').select();return}state.stage++;save();render();if(state.stage<3)$('hmAnswer').focus();else $('hmTiles').querySelector('button').focus()};
+ $('hmPuzzleHint').onclick=()=>{$('hmTileHint').hidden=!$('hmTileHint').hidden};
+ $('hmReset').onclick=()=>{state={clue:false,key:false,unlocked:false,stage:0,order:[3,0,5,1,4,2],won:false};selected=null;save();[portrait,candle,key].forEach(el=>{el.style.left='';el.style.top=''});key.hidden=true;$('hmLight').style.left='';$('hmLight').style.top='';$('hmTileHint').hidden=true;envelope.querySelector('small').textContent='Find what opens it.';tell('The portrait is crooked. Perhaps it can be moved.')};
+ if(state.clue)move(portrait,scene.clientWidth-portrait.offsetWidth-12,12);key.hidden=!state.key||state.unlocked;if(state.unlocked){envelope.querySelector('small').textContent='The seal is broken.';tell(state.won?'Your reward is waiting inside the letter.':'The letter remembers where you stopped.')}else if(state.key)tell('You found the key. Bring it to the envelope.');else if(state.clue)tell('Move the candle around the right side of the room.');
+ window.addEventListener('resize',()=>[portrait,candle,key].forEach(el=>{if(el.style.left)move(el,el.offsetLeft,el.offsetTop)}));
+})();
