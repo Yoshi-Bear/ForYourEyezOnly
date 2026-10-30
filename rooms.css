@@ -12,3 +12,192 @@
 #houseTabs button:focus-visible,.house-room:focus-visible{outline:2px solid #d9b898;outline-offset:3px}
 @media(max-width:500px){.intro{padding-bottom:35px}.intro h1{font-size:45px}#houseCountdown #anniversaryTimer{gap:18px}#houseTabs{margin-bottom:22px;gap:3px;padding:4px}#houseTabs button{font-size:12px;padding:14px 5px}.music-card{padding:14px;gap:12px}.album-art{width:48px;height:48px}.song-info h2{font-size:17px}#playButton{width:41px;height:41px}}
 @media(prefers-reduced-motion:reduce){#houseTabs button{transition:none}}
+/* NAVY / PURPLE / ELECTRIC PINK THEME */
+
+:root {
+    --bg: #0b1025;
+    --panel: #151b38;
+    --panel2: #211b46;
+    --green: #bd9aff;
+    --mint: #8f84ff;
+    --pink: #ed63d9;
+    --text: #f2edff;
+    --muted: #b6afd0;
+    --line: rgba(167, 121, 255, .3);
+}
+
+body {
+    background:
+        radial-gradient(ellipse at top right,
+            #7624bd44, transparent 55%),
+        #0b1025;
+    color: var(--text);
+}
+
+#hauntedScenery {
+    background:
+        radial-gradient(ellipse at 75% 15%,
+            #8b25cc33, transparent 55%),
+        linear-gradient(90deg, #080d24bb, #13143366);
+}
+
+.intro h1 {
+    color: #eee5ff;
+    text-shadow:
+        0 3px #45216d,
+        0 0 35px #a33fff44;
+}
+
+.small-text,
+.section-label,
+.modal-label,
+.countdown-caption {
+    color: #bd9aff;
+}
+
+.intro > p:not(.small-text),
+.envelope-intro,
+.hm-intro {
+    color: #b8b1d2;
+}
+
+#houseCountdown #anniversaryTimer {
+    color: #d7c5ff !important;
+}
+
+/* Radio */
+
+.music-card {
+    background: linear-gradient(120deg, #24204a, #131b38);
+    border-color: #7550ad;
+}
+
+.song-info h2 {
+    color: #f0e4ff;
+}
+
+.song-info p {
+    color: #b9afd0;
+}
+
+.album-art {
+    background: repeating-radial-gradient(
+        circle,
+        #171b38 0 3px,
+        #3b2864 4px 5px
+    );
+    border-color: #aa74e8;
+}
+
+#playButton {
+    background: #a43ed3;
+    border-color: #d797ff;
+    color: white;
+}
+
+#playButton:hover {
+    background: #bd51e7;
+}
+
+/* Navigation */
+
+#houseTabs {
+    background: #111831;
+    border-color: #423669;
+}
+
+#houseTabs button {
+    color: #b7b1d0;
+}
+
+#houseTabs button:hover {
+    background: #352254;
+    color: white;
+}
+
+#houseTabs button[aria-selected="true"] {
+    background: linear-gradient(120deg, #7535b8, #482777);
+    border-color: #bc7aef;
+    color: white;
+}
+
+#houseTabs button[aria-selected="true"]::after {
+    background: #f17bdd;
+}
+
+/* Cards and message windows */
+
+.attraction-game,
+#memoryInvite,
+.message-box,
+.secret-box,
+.prank-terminal,
+#hmDialog {
+    background: linear-gradient(135deg, #242044, #111a34);
+    border-color: #705094;
+    color: #f2edff;
+}
+
+.attraction-game h2,
+#messageTitle,
+.secret-box h2,
+.prank-terminal h2,
+#houseMystery h2 {
+    color: #ead9ff;
+}
+
+#messageText,
+.secret-message p,
+.prank-terminal p,
+#hmStory {
+    color: #d0c6e3;
+}
+
+/* Ayesha and Ziyaad */
+
+#ayeshaChoice,
+#ziyaadChoice {
+    background: #191630;
+    border-color: #9152b9;
+    color: #f3e6ff;
+}
+
+#ayeshaChoice:hover,
+#ziyaadChoice:hover {
+    background: #42225e;
+    border-color: #ed83df;
+    box-shadow: 0 0 20px #b34cd333;
+}
+
+/* Memory game */
+
+#memoryModal {
+    background: #141a35;
+    border-color: #78539c;
+    color: #f2edff;
+}
+
+#mmBoard .mm-front {
+    background: linear-gradient(135deg, #38255c, #202344);
+    border-color: #9164b9;
+    color: #dfb1ff;
+}
+
+#mmBoard .mm-back {
+    background: #653578;
+}
+
+#mmBoard .matched .mm-back {
+    background: #373c82;
+    border-color: #b59bff;
+}
+
+#memoryLaunch,
+#memoryModal .mm-pill,
+#unlockButton,
+#prankSubmit,
+#hmForm button {
+    background: linear-gradient(120deg, #9436c8, #7138b3);
+    border-color: #bf79ed;
+    color: white;
+}
