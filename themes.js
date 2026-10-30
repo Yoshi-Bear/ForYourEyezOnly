@@ -1,0 +1,18 @@
+(() => {
+ const storageKey='fye-theme-v1';
+ const choices=[{id:'dashboard',name:'Arcade',description:'Electric violet, midnight navy and icy blue.',tag:'THE ORIGINAL'},{id:'haunted',name:'The Haunting',description:'Blood, fog and something watching from the dark.',tag:'ENTER IF YOU DARE'},{id:'rose',name:'After Hours',description:'Black cherry, soft rose and warm champagne.',tag:'A LITTLE CLOSER'},{id:'ocean',name:'Deep Blue',description:'Deep ocean, turquoise and a quiet blue glow.',tag:'STAY A WHILE'}];
+ let applied='dashboard',pending='dashboard';try{const v=localStorage.getItem(storageKey);if(choices.some(t=>t.id===v))applied=v}catch{}
+ const root=document.documentElement;root.dataset.theme=applied;
+ const trigger=document.createElement('button');trigger.id='themeMenuButton';trigger.type='button';trigger.innerHTML='<span aria-hidden="true">◈</span> Themes';trigger.setAttribute('aria-haspopup','dialog');
+ const top=document.getElementById('dashTop');if(!top)return;top.insertBefore(trigger,top.querySelector('.dash-profile'));
+ const dialog=document.createElement('dialog');dialog.id='themeDialog';dialog.setAttribute('aria-labelledby','themeDialogTitle');dialog.innerHTML='<div class="theme-dialog-head"><div><p>MAKE IT YOURS</p><h2 id="themeDialogTitle">Choose your atmosphere.</h2></div><button id="themeClose" type="button" aria-label="Close theme picker">×</button></div><p class="theme-description">Preview a look. Apply your favourite. We’ll remember it on this browser.</p><div id="themeChoices" role="group" aria-label="Available themes"></div><p id="themeStatus" role="status"></p><div class="theme-actions"><button id="themeCancel" type="button">Cancel</button><button id="themeApply" type="button">Apply theme</button></div>';
+ document.body.append(dialog);
+ const grid=document.getElementById('themeChoices');
+ choices.forEach(theme=>{const b=document.createElement('button');b.type='button';b.className='theme-option';b.dataset.choice=theme.id;b.setAttribute('aria-pressed','false');const sample=document.createElement('span');sample.className='theme-sample sample-'+theme.id;sample.setAttribute('aria-hidden','true');sample.innerHTML='<i></i><em></em><b></b><small></small>';const tag=document.createElement('small');tag.className='theme-tag';tag.textContent=theme.tag;const name=document.createElement('strong');name.textContent=theme.name;const desc=document.createElement('span');desc.className='theme-option-description';desc.textContent=theme.description;b.append(sample,tag,name,desc);b.onclick=()=>{pending=theme.id;preview()};grid.append(b)});
+ function preview(){root.dataset.theme=pending;grid.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.choice===pending)));document.getElementById('themeStatus').textContent=choices.find(t=>t.id===pending).name+(pending===applied?' — current theme':' — preview');}
+ function close(){dialog.close()}
+ trigger.onclick=()=>{pending=applied;preview();dialog.showModal()};document.getElementById('themeClose').onclick=close;document.getElementById('themeCancel').onclick=close;
+ document.getElementById('themeApply').onclick=()=>{applied=pending;let saved=true;try{localStorage.setItem(storageKey,applied)}catch{saved=false}root.dataset.theme=applied;dialog.close();notice.textContent=saved?'Theme applied and saved.':'Theme applied. Browser storage is unavailable, so it may reset when you return.';clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>notice.textContent='',6500)};
+ dialog.addEventListener('close',()=>{root.dataset.theme=applied;trigger.focus()});
+ const notice=document.createElement('p');notice.id='themeToast';notice.setAttribute('role','status');document.body.append(notice);let noticeTimer;
+})();
