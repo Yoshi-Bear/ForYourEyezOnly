@@ -60,3 +60,67 @@ html[data-theme=haunted] .watching-eyes{z-index:1}
 @media(max-width:760px){#themeMenuButton{font-size:11px;margin-right:4px;padding:7px 8px}.dash-breadcrumb{max-width:100px}.theme-dialog-head h2{font-size:22px}#themeDialog{padding:21px}html[data-theme=haunted] .dash-hero{min-height:280px;background-size:auto 100%;background-position:70% center}}
 @media(max-width:450px){#themeChoices{gap:9px}.theme-option>strong{font-size:15px}.theme-option-description{font-size:10px}.theme-tag{font-size:7px;letter-spacing:.5px}.theme-sample{height:80px}#themeMenuButton{font-size:10px}.dash-breadcrumb{font-size:7px;max-width:80px}html[data-theme=haunted] .dash-hero{background-image:linear-gradient(90deg,#0d160df5,#101a0ec9 62%,#08110c44),url('haunting.svg')}html[data-theme=haunted] .dash-hero h1{font-size:33px}}
 @media(prefers-reduced-motion:reduce){html[data-theme=haunted] #hauntedScenery *,html[data-theme=haunted] .blood-drips i{animation:none!important}}
+/* MUSIC ICON FOR EACH THEME */
+
+#dashRadio .album-art {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hide the old dial visually */
+#dashRadio .album-art .radio-dial {
+    visibility: hidden;
+}
+
+/* Decorative icon — clicks reach the original music icon */
+#dashRadio .album-art::after {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 25px;
+    line-height: 1;
+    pointer-events: none;
+}
+
+/* Arcade */
+html[data-theme="dashboard"] #dashRadio .album-art {
+    background: linear-gradient(135deg, #833de0, #344dab);
+    border: 1px solid #b087f0;
+}
+
+html[data-theme="dashboard"] #dashRadio .album-art::after {
+    content: "🎧";
+}
+
+/* Haunted */
+html[data-theme="haunted"] #dashRadio .album-art {
+    background: radial-gradient(circle, #34412b, #080e0a);
+    border: 1px solid #8a273b;
+    box-shadow: inset 0 0 15px #0009, 0 0 12px #81152c33;
+}
+
+html[data-theme="haunted"] #dashRadio .album-art::after {
+    content: "💀";
+    filter: sepia(.5);
+}
+
+/* After Hours */
+html[data-theme="rose"] #dashRadio .album-art {
+    background: linear-gradient(135deg, #85435e, #341b30);
+    border: 1px solid #d597ae;
+}
+
+html[data-theme="rose"] #dashRadio .album-art::after {
+    content: "🌹";
+}
+
+/* Deep Blue */
+html[data-theme="ocean"] #dashRadio .album-art {
+    background: linear-gradient(135deg, #17637b, #092c42);
+    border: 1px solid #65d9d4;
+}
+
+html[data-theme="ocean"] #dashRadio .album-art::after {
+    content: "🌊";
+}
