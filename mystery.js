@@ -10,14 +10,14 @@
  function revealClue(){if(state.clue)return;state.clue=true;save();tell('Behind the portrait: “Some things only appear in the light.” Move the candle.');$('hmShadow').style.opacity='.7';setTimeout(()=>$('hmShadow').style.opacity='0',1800)}
  function update(el){
   if(el===portrait&&Math.abs(portrait.offsetLeft-scene.clientWidth*.08)>65)revealClue();
-  if(el===candle){const c=center(candle);$('hmLight').style.left=c.x-125+'px';$('hmLight').style.top=c.y-145+'px';const k=key.hidden?{x:scene.clientWidth*.79+30,y:115}:center(key);if(state.clue&&!state.key&&Math.hypot(c.x-k.x,c.y-22-k.y)<125){state.key=true;key.hidden=false;save();tell('Something catches the light. Drag the key onto the sealed letter.')}}
+  if(el===candle){const c=center(candle);$('hmLight').style.left=c.x-125+'px';$('hmLight').style.top=c.y-145+'px';const k=key.hidden?{x:scene.clientWidth*.79+30,y:115}:center(key);if(state.clue&&!state.key&&Math.hypot(c.x-k.x,c.y-22-k.y)<125){state.key=true;key.hidden=false;key.style.zIndex='8';save();tell('Something catches the light. Drag the key onto the sealed letter.')}}
  }
  function unlock(){if(!state.key||state.unlocked)return;state.unlocked=true;save();key.hidden=true;tell('The lock gives way. Open the letter.');envelope.querySelector('small').textContent='The seal is broken.';openLetter()}
  function drop(el){if(el!==key)return;const a=el.getBoundingClientRect(),b=envelope.getBoundingClientRect();if(a.right>b.left&&a.left<b.right&&a.bottom>b.top&&a.top<b.bottom)unlock();else tell('Bring the key to the bloodstained envelope.');}
  function draggable(el){let held=false,dx=0,dy=0,moved=false,startX=0,startY=0;
   el.addEventListener('pointerdown',e=>{if(e.button!==0)return;held=true;moved=false;startX=e.clientX;startY=e.clientY;const b=el.getBoundingClientRect();dx=e.clientX-b.left;dy=e.clientY-b.top;el.setPointerCapture(e.pointerId)});
   el.addEventListener('pointermove',e=>{if(!held)return;if(Math.hypot(e.clientX-startX,e.clientY-startY)>5)moved=true;const b=scene.getBoundingClientRect();move(el,e.clientX-b.left-scene.clientLeft-dx,e.clientY-b.top-scene.clientTop-dy);update(el)});
-  el.addEventListener('pointerup',()=>{if(!held)return;held=false;drop(el)});
+  el.addEventListener('pointerup',()=>{if(!held)return;held=false;drop(el);if(el===candle&&state.key&&!state.unlocked){const c=center(candle),k=center(key);if(Math.hypot(c.x-k.x,c.y-k.y)<100){move(candle,Math.max(0,key.offsetLeft-110),Math.min(scene.clientHeight-candle.offsetHeight,key.offsetTop+100));update(candle)}}});
   el.addEventListener('pointercancel',()=>held=false);
   el.addEventListener('click',e=>{if(moved){moved=false;return}if(el===portrait){move(portrait,scene.clientWidth-portrait.offsetWidth-12,12);revealClue()}if(el===key)unlock()});
   el.addEventListener('keydown',e=>{const dirs={ArrowLeft:[-20,0],ArrowRight:[20,0],ArrowUp:[0,-20],ArrowDown:[0,20]};if(!dirs[e.key])return;e.preventDefault();move(el,el.offsetLeft+dirs[e.key][0],el.offsetTop+dirs[e.key][1]);update(el);drop(el)});
